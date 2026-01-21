@@ -1,1544 +1,1517 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>appuzlota // Developer</title>
-    <!-- Added error handling for Web3 extensions -->
-    <script>
-        // Silently catch Web3 extension errors without breaking the page
-        if(typeof window.__stopEthereumErrors === 'undefined') {
-            window.__stopEthereumErrors = true;
-            const originalError = console.error;
-            console.error = function() {
-                if(arguments.length > 0 && typeof arguments[0] === 'string' && 
-                   arguments[0].includes('inpage.js')) return;
-                originalError.apply(console, arguments);
-            };
-        }
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Appuzlota - Dev" />
+    <meta
+      name="keywords"
+      content="Dev, Web Development, React, Node.js, Portfolio"
+    />
+    <meta name="author" content="Appuzlota" />
+
+    <meta property="og:title" content="Appuzlota | Dev" />
+    <meta property="og:description" content="Building things for the web" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://appuzlota.me" />
+    <meta property="og:image" content="https://appuzlota.me/og-image.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Appuzlota | Dev" />
+    <meta name="twitter:description" content="Building things for the web" />
+    <meta name="twitter:image" content="https://appuzlota.me/og-image.png" />
+
+    <title>Appuzlota | Dev</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%237c3aed'/%3E%3Cstop offset='100%25' stop-color='%23a855f7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='15' y='15' width='70' height='70' rx='15' fill='url(%23a)'/%3E%3Cpath d='M30 70V40l20 15 20-15v30l-20 15z' fill='%23fff'/%3E%3Ccircle cx='50' cy='45' r='6' fill='%237c3aed'/%3E%3C/svg%3E"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Appuzlota",
+        "jobTitle": "Dev",
+        "description": "Building things for the web",
+        "url": "https://appuzlota.me"
+      }
     </script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=VT323&display=swap" rel="stylesheet">
-    <style>
-        /* === Base & Theming: Brutalism meets Y2K (Azure Blue Theme) === */
-        body {
-            font-family: 'Space Mono', monospace;
-            background-color: #0A0A0A;
-            color: #E0E0E0;
-            overflow-x: hidden;
-            cursor: none;
-        }
 
-        /* Custom Cursor */
-        .cursor {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #00AFFF;
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            will-change: transform;
-            contain: layout style paint;
-        }
-
-        .cursor-follower {
-            width: 40px;
-            height: 40px;
-            border: 1px solid rgba(0, 175, 255, 0.3);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9998;
-            transform: translate(-50%, -50%);
-            will-change: transform;
-            contain: layout style paint;
-        }
-
-        .cursor.hover {
-            width: 40px;
-            height: 40px;
-            background: rgba(0, 175, 255, 0.1);
-            border-color: #00AFFF;
-            mix-blend-mode: screen;
-        }
-
-        /* Y2K Grainy/Static Background with Animated Gradient */
-        .noise-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            overflow: hidden;
-            background: #0A0A0A;
-            contain: strict;
-        }
-
-        .noise-bg::before {
-            content: "";
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMDAgMzAwIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuODUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIi8+PC9zdmc+');
-            opacity: 0.04;
-            animation: noise 8s steps(10) infinite;
-            will-change: transform;
-            transform: translateZ(0);
-            backface-visibility: hidden;
-        }
-
-        .noise-bg::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 175, 255, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-            will-change: background;
-            transform: translateZ(0);
-        }
-
-        @keyframes noise {
-            0%, 100% { transform: translate3d(0, 0, 0); } 
-            10% { transform: translate3d(-5%, -10%, 0); } 
-            20% { transform: translate3d(-15%, 5%, 0); } 
-            30% { transform: translate3d(7%, -25%, 0); } 
-            40% { transform: translate3d(-5%, 25%, 0); } 
-            50% { transform: translate3d(-15%, 10%, 0); } 
-            60% { transform: translate3d(15%, 0%, 0); } 
-            70% { transform: translate3d(0%, 15%, 0); } 
-            80% { transform: translate3d(3%, 35%, 0); } 
-            90% { transform: translate3d(-10%, 10%, 0); }
-        }
-
-        /* Floating Particles */
-        .particle {
-            position: fixed;
-            pointer-events: none;
-            opacity: 0;
-            z-index: -1;
-            will-change: transform, opacity;
-            contain: layout style paint;
-        }
-
-        .particle.active {
-            animation: float-up 3s ease-out forwards;
-        }
-
-        @keyframes float-up {
-            0% {
-                opacity: 0;
-                transform: translate3d(0, 0, 0) scale(0);
-            }
-            10% {
-                opacity: 1;
-                transform: translate3d(0, -20px, 0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translate3d(0, -200px, 0) scale(0.5);
-            }
-        }
-
-        /* === Typography & UI Elements === */
-        h1, h2, h3 { font-family: 'VT323', monospace; }
-        
-        .y2k-glow { 
-            text-shadow: 0 0 8px rgba(0, 175, 255, 0.7);
-            animation: pulse-glow 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse-glow {
-            0%, 100% { text-shadow: 0 0 8px rgba(0, 175, 255, 0.7); }
-            50% { text-shadow: 0 0 20px rgba(0, 175, 255, 0.9), 0 0 30px rgba(0, 175, 255, 0.5); }
-        }
-
-        .accent-color { color: #00AFFF; }
-
-        .brutalist-btn {
-            background-color: #00AFFF;
-            color: #0A0A0A;
-            font-family: 'VT323', monospace;
-            font-size: 1.25rem;
-            padding: 0.5rem 1.5rem;
-            border: 2px solid #00AFFF;
-            box-shadow: 4px 4px 0px #E0E0E0;
-            transition: all 0.2s ease-in-out;
-            text-transform: uppercase;
-            position: relative;
-            overflow: hidden;
-            cursor: none;
-            transform: translateZ(0);
-            backface-visibility: hidden;
-            display: inline-block;
-            text-decoration: none;
-        }
-
-        .brutalist-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .brutalist-btn:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .brutalist-btn:hover {
-            transform: translate3d(2px, 2px, 0);
-            box-shadow: 2px 2px 0px #E0E0E0;
-        }
-
-        .brutalist-btn:active {
-            transform: translate3d(4px, 4px, 0);
-            box-shadow: 0px 0px 0px #E0E0E0;
-        }
-
-        /* Enhanced Bento Items */
-        .bento-item {
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.3s ease;
-            will-change: transform;
-            transform: translateZ(0);
-            backface-visibility: hidden;
-            contain: layout style;
-        }
-
-        .bento-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, transparent 40%, rgba(0, 175, 255, 0.1) 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            border-radius: 0.5rem;
-            pointer-events: none;
-        }
-
-        .bento-item:hover::before {
-            opacity: 1;
-        }
-
-        .bento-item:hover {
-            transform: translate3d(0, 0, 10px);
-        }
-
-        /* Skill Tags with Magnetic Effect */
-        .skill-tag {
-            border: 1px solid #555;
-            background-color: #222;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            cursor: none;
-            will-change: transform;
-            transform: translateZ(0);
-            backface-visibility: hidden;
-            contain: layout style paint;
-        }
-
-        .skill-tag::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100%;
-            height: 100%;
-            background: #00AFFF;
-            transform: translate(-50%, -50%) scale(0);
-            transition: transform 0.3s ease;
-            border-radius: 50%;
-        }
-
-        .skill-tag:hover::before {
-            transform: translate(-50%, -50%) scale(2);
-        }
-
-        .skill-tag:hover {
-            color: #0A0A0A;
-            border-color: #00AFFF;
-            transform: translate3d(0, -2px, 0);
-            box-shadow: 0 5px 15px rgba(0, 175, 255, 0.3);
-        }
-
-        .skill-tag span {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* === Advanced Animations - Optimized for smoother performance === */
-        .scroll-animate {
-            opacity: 0;
-            transform: translate3d(0, 30px, 0) rotateX(-10deg);
-            transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
-                        transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            transform-origin: center center;
-            backface-visibility: hidden;
-            perspective: 1000px;
-            will-change: opacity, transform;
-            contain: layout style;
-        }
-
-        .scroll-animate.is-visible {
-            opacity: 1;
-            transform: translate3d(0, 0, 0) rotateX(0);
-        }
-
-        /* Stagger animation for skill tags */
-        .skill-tag {
-            opacity: 0;
-            transform: translate3d(0, 20px, 0);
-        }
-
-        .skills-visible .skill-tag {
-            opacity: 1;
-            transform: translate3d(0, 0, 0);
-            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .skills-visible .skill-tag:nth-child(1) { transition-delay: 0.1s; }
-        .skills-visible .skill-tag:nth-child(2) { transition-delay: 0.2s; }
-        .skills-visible .skill-tag:nth-child(3) { transition-delay: 0.3s; }
-        .skills-visible .skill-tag:nth-child(4) { transition-delay: 0.4s; }
-        .skills-visible .skill-tag:nth-child(5) { transition-delay: 0.5s; }
-
-        #three-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
-        /* === Enhanced Scramble Text Animation === */
-        .scramble-text {
-            cursor: none;
-            contain: layout style;
-        }
-
-        .scramble-text .char {
-            display: inline-block;
-            will-change: transform, contents;
-            transition: all 0.3s ease;
-            white-space: pre;
-            transform: translateZ(0);
-            backface-visibility: hidden;
-            contain: layout style paint;
-        }
-
-        .scramble-text .char.scrambling {
-            color: #00AFFF;
-            animation: glitch 0.1s infinite;
-            text-shadow: 0 0 5px rgba(0, 175, 255, 0.8);
-        }
-
-        @keyframes glitch {
-            0% { transform: translate3d(0, 0, 0) rotateZ(0deg); }
-            25% { transform: translate3d(-1px, 1px, 0) rotateZ(-1deg); }
-            50% { transform: translate3d(1px, -1px, 0) rotateZ(1deg); }
-            75% { transform: translate3d(-0.5px, 0.5px, 0) rotateZ(-0.5deg); }
-            100% { transform: translate3d(0, 0, 0) rotateZ(0deg); }
-        }
-
-        /* === Age Counter with Glow Effect === */
-        .age-counter {
-            font-family: 'VT323', monospace;
-            font-size: 1.25rem;
-            color: #00AFFF;
-            margin-top: 1.5rem;
-            position: relative;
-            contain: layout style;
-        }
-
-        .age-value {
-            font-size: 1.75rem;
-            text-shadow: 0 0 10px rgba(0, 175, 255, 0.5);
-            display: inline-block;
-            animation: counter-pulse 1s ease-in-out infinite;
-            font-variant-numeric: tabular-nums;
-            letter-spacing: 0.02em;
-            transform: translateZ(0);
-            backface-visibility: hidden;
-        }
-
-        @keyframes counter-pulse { 
-            0%, 100% { transform: scale3d(1, 1, 1); } 
-            50% { transform: scale3d(1.02, 1.02, 1); }
-        }
-
-        /* Loading Animation */
-        .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #0A0A0A;
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.5s ease;
-            contain: strict;
-        }
-
-        .loader.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .loader-text {
-            font-family: 'VT323', monospace;
-            font-size: 2rem;
-            color: #00AFFF;
-            animation: loader-blink 0.5s infinite;
-        }
-
-        @keyframes loader-blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
-        /* Age progress bar */
-        .age-progress-bar {
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            margin-top: 0.5rem;
-            overflow: hidden;
-            contain: strict;
-        }
-
-        .age-progress {
-            height: 100%;
-            background: linear-gradient(90deg, #00AFFF 0%, #0080FF 100%);
-            width: 0%;
-            animation: progress-fill 2s ease-out forwards;
-            box-shadow: 0 0 10px rgba(0, 175, 255, 0.5);
-            transform: translateZ(0);
-            backface-visibility: hidden;
-        }
-
-        @keyframes progress-fill {
-            to { width: 100%; }
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .cursor, .cursor-follower {
-                display: none;
-            }
-            
-            body {
-                cursor: auto;
-            }
-            
-            .skill-tag, .brutalist-btn, .scramble-text {
-                cursor: pointer;
-            }
-        }
-
-        /* GPU Acceleration */
-        .particle,
-        .bento-item,
-        .skill-tag,
-        .cursor,
-        .cursor-follower {
-            transform: translateZ(0);
-            backface-visibility: hidden;
-            perspective: 1000px;
-        }
-
-        /* Typewriter Effect */
-        .typewriter {
-            overflow: hidden;
-            white-space: nowrap;
-            animation: typing 3s steps(40, end);
-        }
-
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-
-        /* Blinking Status */
-        .blink {
-            animation: blink-animation 1s infinite;
-        }
-
-        @keyframes blink-animation {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0.3; }
-        }
-
-        /* Glitch effect for main title */
-        h1[data-text] {
-            position: relative;
-        }
-
-        h1[data-text]::before,
-        h1[data-text]::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-        }
-
-        h1[data-text]:hover::before {
-            animation: glitch-1 0.3s infinite;
-            color: #FF00FF;
-            z-index: -1;
-            opacity: 0.8;
-        }
-
-        h1[data-text]:hover::after {
-            animation: glitch-2 0.3s infinite;
-            color: #00FFFF;
-            z-index: -2;
-            opacity: 0.8;
-        }
-
-        @keyframes glitch-1 {
-            0% { clip-path: inset(40% 0 61% 0); transform: translate(-2px, -2px); }
-            20% { clip-path: inset(92% 0 1% 0); transform: translate(2px, 2px); }
-            40% { clip-path: inset(43% 0 1% 0); transform: translate(-2px, 2px); }
-            60% { clip-path: inset(25% 0 58% 0); transform: translate(2px, -2px); }
-            80% { clip-path: inset(54% 0 7% 0); transform: translate(-2px, 2px); }
-            100% { clip-path: inset(58% 0 43% 0); transform: translate(2px, -2px); }
-        }
-
-        @keyframes glitch-2 {
-            0% { clip-path: inset(25% 0 58% 0); transform: translate(2px, 2px); }
-            20% { clip-path: inset(54% 0 7% 0); transform: translate(-2px, -2px); }
-            40% { clip-path: inset(58% 0 43% 0); transform: translate(2px, -2px); }
-            60% { clip-path: inset(40% 0 61% 0); transform: translate(-2px, 2px); }
-            80% { clip-path: inset(92% 0 1% 0); transform: translate(2px, -2px); }
-            100% { clip-path: inset(43% 0 1% 0); transform: translate(-2px, 2px); }
-        }
-    </style>
-</head>
-<body class="p-4 md:p-6">
-    <!-- Custom Cursor -->
-    <div class="cursor"></div>
-    <div class="cursor-follower"></div>
-
-    <!-- Loading Screen -->
-    <div class="loader">
-        <div class="loader-text">INITIALIZING...</div>
+    <link rel="stylesheet" href="styles/main.css" />
+  </head>
+  <body>
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="loading-spinner"></div>
+      <p>Loading...</p>
     </div>
 
-    <!-- Background -->
-    <div class="noise-bg"></div>
+    <div class="cursor-dot" data-cursor-dot></div>
+    <div class="cursor-outline" data-cursor-outline></div>
 
-    <!-- Particle Container -->
-    <div id="particles-container"></div>
+    <div class="noise-overlay"></div>
+    <div class="bg-particles" id="particles"></div>
 
-    <main class="max-w-6xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 md:gap-6">
-            <!-- Hero Section (3D Element) -->
-            <div class="bento-item min-h-[350px] md:min-h-[400px] md:col-span-2 lg:col-span-4 lg:row-span-2 flex flex-col justify-between scroll-animate">
-                <div class="relative z-10 p-4 md:p-6">
-                    <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl y2k-glow accent-color" data-text="appuzlota">appuzlota</h1>
-                    <p class="text-base sm:text-lg md:text-xl lg:text-2xl mt-2 text-gray-300 typewriter">Developer & Aspiring Entrepreneur</p>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <button class="theme-switch" aria-label="Toggle theme">
+      <svg
+        class="icon-svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" />
+        <path
+          d="M12 2V4M12 20V22M4.93 4.93L6.34 6.34M17.66 17.66L19.07 19.07M2 12H4M20 12H22M4.93 19.07L6.34 17.66M17.66 6.34L19.07 4.93"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
+    </button>
+
+    <nav class="floating-menu" aria-label="Quick links">
+      <a
+        href="#"
+        class="floating-btn magnetic"
+        data-action="resume"
+        data-tooltip="Download Resume"
+        aria-label="Download Resume"
+      >
+        <svg
+          class="icon-svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 15L12 3M12 3L7 8M12 3L17 8"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M3 17V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V17"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+      </a>
+      <a
+        href="mailto:hello@appuzlota.me"
+        class="floating-btn magnetic"
+        data-tooltip="Contact Me"
+        aria-label="Contact Me"
+      >
+        <svg
+          class="icon-svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            x="2"
+            y="4"
+            width="20"
+            height="16"
+            rx="2"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+          <path
+            d="M2 6L12 13L22 6"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+      </a>
+      <button
+        class="floating-btn magnetic"
+        data-action="game"
+        aria-label="Play Game"
+      >
+        <svg
+          class="icon-svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            x="2"
+            y="6"
+            width="14"
+            height="12"
+            rx="2"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+          <path
+            d="M6 18H14C15.1 18 16 17.1 16 16V14H18C19.1 14 20 13.1 20 12V10C20 8.9 19.1 8 18 8"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <circle cx="17" cy="9" r="1" fill="currentColor" />
+        </svg>
+      </button>
+    </nav>
+
+    <nav class="dots-indicator" aria-label="Slide navigation">
+      <button
+        class="dot active"
+        aria-label="Go to Hero section"
+        tabindex="0"
+      ></button>
+      <button
+        class="dot"
+        aria-label="Go to About section"
+        tabindex="0"
+      ></button>
+      <button
+        class="dot"
+        aria-label="Go to Skills section"
+        tabindex="0"
+      ></button>
+      <button
+        class="dot"
+        aria-label="Go to Portfolio section"
+        tabindex="0"
+      ></button>
+      <button
+        class="dot"
+        aria-label="Go to Contact section"
+        tabindex="0"
+      ></button>
+    </nav>
+
+    <div class="nav-controls" aria-label="Slide controls">
+      <button class="nav-btn magnetic" id="prevBtn" aria-label="Previous slide">
+        <svg
+          class="icon-svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M15 18L9 12L15 6"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+      <button class="nav-btn magnetic" id="nextBtn" aria-label="Next slide">
+        <svg
+          class="icon-svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9 6L15 12L9 18"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <main id="slider-viewport">
+      <div id="slider-track">
+        <section class="slide" aria-labelledby="hero-heading">
+          <div class="slide-content">
+            <span class="section-tag gsap-hero">Hi, I'm</span>
+            <h1
+              id="hero-heading"
+              class="hero-title gsap-hero"
+              style="font-size: clamp(3rem, 7vw, 7rem)"
+            >
+              Appuzlota<br /><span class="gradient-text">Dev</span>
+            </h1>
+            <div class="age-counter gsap-hero">
+              <div class="age-box">
+                <span class="age-prefix">I've been alive for</span>
+                <div class="age-value">
+                  <span id="ageDisplay" class="age-number">00.000000000</span>
+                  <span class="age-unit">years</span>
                 </div>
-                <div class="relative z-10 text-gray-400 text-sm p-4 md:p-6">
-                    <p class="status-line">Status: <span class="accent-color blink">Online</span></p>
-                    <p class="location-line">Location: The Digital Frontier</p>
-                </div>
-                <canvas id="three-canvas"></canvas>
+              </div>
             </div>
+            <p
+              class="hero-sub gsap-hero"
+              style="
+                font-size: 1.3rem;
+                color: var(--text-gray);
+                max-width: 600px;
+                margin-top: 25px;
+              "
+            >
+              I build things for the web. Currently creating at
+              <a
+                href="https://www.7flow.tech/"
+                target="_blank"
+                rel="noopener"
+                style="
+                  color: var(--primary);
+                  text-decoration: none;
+                  font-weight: 600;
+                "
+                >7Flow</a
+              >.
+            </p>
+            <button class="btn magnetic gsap-hero" style="margin-top: 40px">
+              See My Work
+              <svg
+                class="icon-svg-inline"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5 12H19M19 12L12 5M19 12L12 19"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+        </section>
 
-            <!-- About Me -->
-            <div class="bento-item min-h-[300px] md:col-span-2 lg:col-span-2 lg:row-span-2 flex flex-col justify-center scroll-animate" style="transition-delay: 100ms;">
-                <div class="space-y-4">
-                    <h2 class="text-3xl md:text-4xl accent-color scramble-text" data-scramble-radius="50" data-scramble-duration="1.2" data-scramble-speed="0.5" data-scramble-chars=".:">SYSTEM.ID</h2>
-                    <p class="text-sm md:text-base text-gray-300 leading-relaxed scramble-text" style="word-break: keep-all; overflow-wrap: break-word; hyphens: none;">Student & future-focused entrepreneur exploring the intersections of AI, new tech, and science. I'm an introvert who finds clarity in code and complexity. My goal is to build something that matters.</p>
-                    <div class="age-counter">
-                        <p>Current Age: <span class="age-value" id="live-age">0.000000000</span> years</p>
-                        <div class="age-progress-bar">
-                            <div class="age-progress"></div>
-                        </div>
-                    </div>
-                </div>
+        <section class="slide" aria-labelledby="about-heading">
+          <div class="slide-content">
+            <div class="about-grid">
+              <div class="gsap-about-left">
+                <span class="section-tag">01 — About</span>
+                <h2
+                  id="about-heading"
+                  class="gradient-text"
+                  style="font-size: 3rem; margin-bottom: 20px"
+                >
+                  I Make Things
+                </h2>
+                <p
+                  style="
+                    color: var(--text-gray);
+                    font-size: 1.1rem;
+                    line-height: 1.8;
+                    margin-top: 20px;
+                  "
+                >
+                  Full-stack developer who loves turning ideas into working
+                  products. Currently building amazing stuff with the team at
+                  <a
+                    href="https://www.7flow.tech/"
+                    target="_blank"
+                    rel="noopener"
+                    style="color: var(--primary); font-weight: 600"
+                    >7Flow</a
+                  >.
+                </p>
+                <p
+                  style="
+                    color: var(--text-gray);
+                    font-size: 1.1rem;
+                    line-height: 1.8;
+                    margin-top: 20px;
+                  "
+                >
+                  When I'm not coding, you'll find me exploring new
+                  technologies, contributing to open source, or just enjoying
+                  good coffee and even better music.
+                </p>
+              </div>
+              <div class="gsap-about-right" style="position: relative">
+                <img
+                  src="https://image.benq.com/is/image/benqco/rd-campaign-vertical-%EF%BD%8Donitor?$ResponsivePreset$&wid=1920"
+                  alt="Developer workspace"
+                  style="
+                    width: 100%;
+                    border-radius: 20px;
+                    border: 2px solid var(--border-color);
+                  "
+                  loading="lazy"
+                />
+              </div>
             </div>
+          </div>
+        </section>
 
-            <!-- Skills -->
-            <div class="bento-item min-h-[200px] md:col-span-1 lg:col-span-3 scroll-animate" style="transition-delay: 200ms;">
-                <h2 class="text-3xl md:text-4xl accent-color mb-4">SKILLSET.EXE</h2>
-                <div class="flex flex-wrap gap-2 md:gap-3 skills-container">
-                    <span class="skill-tag text-sm md:text-base lg:text-lg px-3 md:px-4 py-1.5 md:py-2 rounded-md"><span>Python</span></span>
-                    <span class="skill-tag text-sm md:text-base lg:text-lg px-3 md:px-4 py-1.5 md:py-2 rounded-md"><span>JavaScript</span></span>
-                    <span class="skill-tag text-sm md:text-base lg:text-lg px-3 md:px-4 py-1.5 md:py-2 rounded-md"><span>AI Concepts</span></span>
-                    <span class="skill-tag text-sm md:text-base lg:text-lg px-3 md:px-4 py-1.5 md:py-2 rounded-md"><span>New Tech</span></span>
-                    <span class="skill-tag text-sm md:text-base lg:text-lg px-3 md:px-4 py-1.5 md:py-2 rounded-md"><span>Science</span></span>
+        <section class="slide" aria-labelledby="skills-heading">
+          <div class="slide-content">
+            <span class="section-tag">02 — Tools</span>
+            <h2 id="skills-heading" class="gradient-text section-title">
+              What I Use
+            </h2>
+            <div class="tools-showcase">
+              <div class="tool-category">
+                <div class="category-header">
+                  <div class="category-icon frontend-icon">
+                    <svg
+                      viewBox="0 0 48 48"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <rect
+                        x="6"
+                        y="6"
+                        width="36"
+                        height="36"
+                        rx="6"
+                        fill="currentColor"
+                        fill-opacity="0.2"
+                      />
+                      <path
+                        d="M14 24L24 16L34 24"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M14 24L24 32L34 24"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M24 32V16"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                      />
+                      <circle cx="16" cy="24" r="2" fill="currentColor" />
+                      <circle cx="32" cy="24" r="2" fill="currentColor" />
+                    </svg>
+                  </div>
+                  <h3>Frontend Development</h3>
                 </div>
-            </div>
+                <div class="tool-tags-large">
+                  <span class="tool-tag-large" data-tooltip="React">React</span>
+                  <span class="tool-tag-large" data-tooltip="Next.js"
+                    >Next.js</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="TypeScript"
+                    >TypeScript</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="Vue.js"
+                    >Vue.js</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="Tailwind CSS"
+                    >Tailwind</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="GSAP Animation"
+                    >GSAP</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="Redux State"
+                    >Redux</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="Vite Build"
+                    >Vite</span
+                  >
+                </div>
+              </div>
 
-            <!-- Contact -->
-            <div class="bento-item min-h-[200px] md:col-span-1 lg:col-span-3 flex flex-col items-center justify-center text-center scroll-animate" style="transition-delay: 300ms;">
-                <h2 class="text-3xl md:text-4xl accent-color mb-4">CONTACT.CMD</h2>
-                <p class="mb-6 text-sm md:text-base text-gray-400">Copy my Discord ID or Email, or visit my GitHub profile.</p>
-                <div class="relative space-y-4">
-                    <button id="discord-button" class="brutalist-btn text-base md:text-xl">
-                        ID: appuzlota
-                    </button>
-                    <span id="discord-copy-feedback" class="absolute left-1/2 -translate-x-1/2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-md opacity-0 transition-all duration-300 whitespace-nowrap" style="bottom: -2rem;">COPIED</span>
-                    <button id="email-button" class="brutalist-btn text-base md:text-xl">
-                        Email: hello@appuzlota.me
-                    </button>
-                    <span id="email-copy-feedback" class="absolute left-1/2 -translate-x-1/2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-md opacity-0 transition-all duration-300 whitespace-nowrap" style="bottom: -2rem;">COPIED</span>
-                    <a href="https://github.com/appuzlotatheog" target="_blank" rel="noopener noreferrer" class="brutalist-btn text-base md:text-xl">
-                        GitHub: appuzlotatheog
+              <div class="tool-category">
+                <div class="category-header">
+                  <div class="category-icon backend-icon">
+                    <svg
+                      viewBox="0 0 48 48"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <rect
+                        x="8"
+                        y="14"
+                        width="32"
+                        height="20"
+                        rx="3"
+                        fill="currentColor"
+                        fill-opacity="0.2"
+                      />
+                      <path
+                        d="M8 18H40"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M14 18V34"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M24 18V34"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M34 18V34"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                      <circle cx="14" cy="26" r="3" fill="currentColor" />
+                      <circle cx="24" cy="26" r="3" fill="currentColor" />
+                      <circle cx="34" cy="26" r="3" fill="currentColor" />
+                    </svg>
+                  </div>
+                  <h3>Backend & Database</h3>
+                </div>
+                <div class="tool-tags-large">
+                  <span class="tool-tag-large" data-tooltip="Node.js"
+                    >Node.js</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="Python"
+                    >Python</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="PostgreSQL"
+                    >PostgreSQL</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="MongoDB"
+                    >MongoDB</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="Redis Cache"
+                    >Redis</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="GraphQL API"
+                    >GraphQL</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="Express.js"
+                    >Express</span
+                  >
+                </div>
+              </div>
+
+              <div class="tool-category">
+                <div class="category-header">
+                  <div class="category-icon devops-icon">
+                    <svg
+                      viewBox="0 0 48 48"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="24"
+                        cy="24"
+                        r="16"
+                        fill="currentColor"
+                        fill-opacity="0.2"
+                      />
+                      <path
+                        d="M24 12V24L32 28"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                      />
+                      <circle cx="24" cy="24" r="4" fill="currentColor" />
+                    </svg>
+                  </div>
+                  <h3>Cloud & DevOps</h3>
+                </div>
+                <div class="tool-tags-large">
+                  <span class="tool-tag-large" data-tooltip="AWS Services"
+                    >AWS</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="Docker Containers"
+                    >Docker</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="Vercel Hosting"
+                    >Vercel</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="CI/CD Pipelines"
+                    >CI/CD</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="Linux Server"
+                    >Linux</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="Nginx Proxy"
+                    >Nginx</span
+                  >
+                </div>
+              </div>
+
+              <div class="tool-category">
+                <div class="category-header">
+                  <div class="category-icon design-icon">
+                    <svg
+                      viewBox="0 0 48 48"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <rect
+                        x="8"
+                        y="8"
+                        width="32"
+                        height="32"
+                        rx="4"
+                        fill="currentColor"
+                        fill-opacity="0.2"
+                      />
+                      <path
+                        d="M16 16L24 12L32 16V32L24 36L16 32V16Z"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M24 24V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M16 24L32 24"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </div>
+                  <h3>Design & Tools</h3>
+                </div>
+                <div class="tool-tags-large">
+                  <span class="tool-tag-large" data-tooltip="Figma Design"
+                    >Figma</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="Adobe XD"
+                    >Adobe XD</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="UI/UX Design"
+                    >UI/UX</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="Motion Design"
+                    >Motion</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="Git Version"
+                    >Git</span
+                  >
+                  <span class="tool-tag-large" data-tooltip="VS Code Editor"
+                    >VS Code</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide" aria-labelledby="portfolio-heading">
+          <div class="slide-content">
+            <span class="section-tag">03 — Work</span>
+            <h2 id="portfolio-heading" class="gradient-text section-title">
+              Featured Projects
+            </h2>
+            <div class="projects-showcase">
+              <div class="project-large">
+                <div class="project-image-wrapper">
+                  <img
+                    src="assets/images/hyprdash.png"
+                    alt="HyprDash dashboard"
+                    loading="lazy"
+                  />
+                  <div class="project-overlay">
+                    <a
+                      href="https://github.com/appuzlotatheog/hyprdash-panel"
+                      target="_blank"
+                      rel="noopener"
+                      class="project-link"
+                    >
+                      <svg
+                        class="icon-svg-inline"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M9 19C13.5 19 16.5 16.5 16.5 12.5C16.5 9.5 14 7 10.5 7C9.5 7 8.5 7.5 7.5 8"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                        />
+                        <path
+                          d="M12 12L22 12"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                        />
+                        <circle
+                          cx="12"
+                          cy="12"
+                          r="9"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        />
+                        <path
+                          d="M12 8V10M12 14V16"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                        />
+                      </svg>
+                      View Code
                     </a>
+                  </div>
                 </div>
+                <div class="project-info">
+                  <span class="project-year">2024</span>
+                  <h3>HyprDash</h3>
+                  <p>
+                    Game server management panel with premium UI and AI-powered
+                    features for seamless server administration.
+                  </p>
+                  <div class="project-tech">
+                    <span class="tech-pill">React</span>
+                    <span class="tech-pill">Node.js</span>
+                    <span class="tech-pill">AI</span>
+                    <span class="tech-pill">WebSocket</span>
+                  </div>
+                  <div class="project-stats">
+                    <span
+                      ><svg
+                        class="icon-svg-inline"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                      150+ Stars</span
+                    >
+                    <span
+                      ><svg
+                        class="icon-svg-inline"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M12 15L12 3M12 3L7 8M12 3L17 8"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M3 17V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V17"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                        />
+                      </svg>
+                      500+ Downloads</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="projects-row">
+                <a
+                  href="https://github.com/appuzlotatheog/discord-architect-bot"
+                  target="_blank"
+                  rel="noopener"
+                  class="project-card-horizontal magnetic"
+                >
+                  <div class="card-image">
+                    <img
+                      src="assets/images/discord.png"
+                      alt="Discord Architect bot"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div class="card-content">
+                    <span class="card-year">2024</span>
+                    <h3>Discord Architect</h3>
+                    <p>
+                      AI-powered bot that designs server structures from natural
+                      language descriptions
+                    </p>
+                    <div class="project-tech">
+                      <span class="tech-pill">Discord.js</span>
+                      <span class="tech-pill">OpenAI</span>
+                      <span class="tech-pill">Python</span>
+                    </div>
+                  </div>
+                  <div class="card-arrow">
+                    <svg
+                      class="icon-svg-inline"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5 12H19M19 12L12 5M19 12L12 19"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </div>
+                </a>
+
+                <a
+                  href="https://solva.space"
+                  target="_blank"
+                  rel="noopener"
+                  class="project-card-horizontal magnetic"
+                >
+                  <div class="card-image">
+                    <img
+                      src="assets/images/solva-space.png"
+                      alt="Solva.Space website"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div class="card-content">
+                    <span class="card-year">2024</span>
+                    <h3>Solva.Space</h3>
+                    <p>
+                      Modern clothing brand with complete digital storefront and
+                      payment integration
+                    </p>
+                    <div class="project-tech">
+                      <span class="tech-pill">E-Commerce</span>
+                      <span class="tech-pill">Stripe</span>
+                      <span class="tech-pill">React</span>
+                    </div>
+                  </div>
+                  <div class="card-arrow">
+                    <svg
+                      class="icon-svg-inline"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5 12H19M19 12L12 5M19 12L12 19"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </div>
+                </a>
+              </div>
             </div>
-        </div>
+          </div>
+        </section>
+
+        <section class="slide" aria-labelledby="contact-heading">
+          <div class="slide-content" style="text-align: center">
+            <span class="section-tag">04 — Contact</span>
+            <h2
+              id="contact-heading"
+              class="gradient-text"
+              style="font-size: 5rem; margin-bottom: 30px"
+            >
+              Let's Talk
+            </h2>
+            <p
+              style="
+                color: var(--text-gray);
+                font-size: 1.2rem;
+                max-width: 600px;
+                margin: 0 auto 60px;
+              "
+            >
+              Got something in mind? Let's make it happen together.
+            </p>
+
+            <div class="contact-links">
+              <a
+                href="https://discord.gg/your-discord"
+                target="_blank"
+                rel="noopener"
+                class="contact-link magnetic"
+              >
+                <svg
+                  class="icon-svg-inline"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M8 12C8 12 9.5 9 12 9C14.5 9 16 12 16 12C16 12 14.5 15 12 15C9.5 15 8 12 8 12Z"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <path
+                    d="M6 18C6 18 4 20 3 21M18 18C18 18 20 20 21 21"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                <span>Discord</span>
+              </a>
+              <a href="mailto:hello@appuzlota.me" class="contact-link magnetic">
+                <svg
+                  class="icon-svg-inline"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    x="2"
+                    y="4"
+                    width="20"
+                    height="16"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <path
+                    d="M2 6L12 13L22 6"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                <span>Email</span>
+              </a>
+            </div>
+
+            <div
+              style="
+                display: flex;
+                gap: 20px;
+                margin-top: 80px;
+                justify-content: center;
+                flex-wrap: wrap;
+              "
+            >
+              <a
+                href="https://github.com/appuzlota"
+                target="_blank"
+                rel="noopener"
+                class="nav-btn magnetic"
+                aria-label="GitHub Profile"
+              >
+                <svg
+                  class="icon-svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9 19C13.5 19 16.5 16.5 16.5 12.5C16.5 9.5 14 7 10.5 7C9.5 7 8.5 7.5 7.5 8"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M12 12L22 12"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="9"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                </svg>
+              </a>
+              <a
+                href="https://twitter.com/appuzlota"
+                target="_blank"
+                rel="noopener"
+                class="nav-btn magnetic"
+                aria-label="Twitter Profile"
+              >
+                <svg
+                  class="icon-svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4 4L20 20M20 4L4 20"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </a>
+              <a
+                href="https://linkedin.com/in/appuzlota"
+                target="_blank"
+                rel="noopener"
+                class="nav-btn magnetic"
+                aria-label="LinkedIn Profile"
+              >
+                <svg
+                  class="icon-svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    x="2"
+                    y="2"
+                    width="20"
+                    height="20"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <path
+                    d="M8 11V16M8 8V9M16 13V16M16 8V9"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                  <circle
+                    cx="12"
+                    cy="11"
+                    r="2"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </section>
+      </div>
     </main>
 
-    <footer class="text-center text-gray-600 font-mono text-xs md:text-sm py-8 mt-6">
-        <p>© 2025 appuzlota // All systems operational.</p>
-    </footer>
+    <div
+      class="game-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="game-title"
+    >
+      <button class="game-close" aria-label="Close game">
+        <svg
+          class="icon-svg-inline"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M18 6L6 18M6 6L18 18"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
+      <div class="game-content">
+        <h2
+          id="game-title"
+          style="text-align: center; margin-bottom: 20px; font-size: 1.8rem"
+        >
+          <svg
+            class="icon-svg-inline"
+            style="margin-right: 10px; color: var(--primary-light)"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              x="2"
+              y="6"
+              width="14"
+              height="12"
+              rx="2"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+            <path
+              d="M6 18H14C15.1 18 16 17.1 16 16V14H18C19.1 14 20 13.1 20 12V10C20 8.9 19.1 8 18 8"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+          Super Dev Bros
+        </h2>
+        <div class="game-wrapper">
+          <div class="game-hud">
+            <div class="hud-item">
+              <svg
+                class="icon-svg-inline"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="10"
+                  y="2"
+                  width="4"
+                  height="20"
+                  rx="2"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <circle
+                  cx="12"
+                  cy="4"
+                  r="3"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <path
+                  d="M2 18L12 22L22 18"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+              <span id="levelDisplay">1-1</span>
+            </div>
+            <div class="hud-item hud-score">
+              <svg
+                class="icon-svg-inline"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <span id="scoreDisplay">000000</span>
+            </div>
+            <div class="hud-item hud-lives">
+              <svg
+                class="icon-svg-inline"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 21C12 21 4 13 4 8C4 5 6 3 9 3C11 3 12 5 12 5C12 5 13 3 15 3C18 3 20 5 20 8C20 13 12 21 12 21Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+              </svg>
+              <span id="livesDisplay">3</span>
+            </div>
+            <div class="hud-item hud-power">
+              <svg
+                class="icon-svg-inline"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M8 5C8 5 10 8 10 12C10 16 8 19 8 19C8 19 6 16 6 12C6 8 8 5 8 5Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <path
+                  d="M12 19V22"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+              <span id="powerDisplay">SMALL</span>
+            </div>
+          </div>
+          <div class="canvas-container">
+            <canvas id="mario-game" width="800" height="450"></canvas>
+            <div class="canvas-overlay" id="startOverlay">
+              <div class="start-content">
+                <h3 class="start-title">SUPER DEV BROS</h3>
+                <p class="start-subtitle">Help Appuzlota reach the flag!</p>
+                <div class="start-controls">
+                  <div class="control-hint">
+                    <span class="key">←</span><span class="key">→</span>
+                    <span>Move</span>
+                  </div>
+                  <div class="control-hint">
+                    <span class="key">SPACE</span>
+                    <span>Jump</span>
+                  </div>
+                  <div class="control-hint">
+                    <span class="key">SHIFT</span>
+                    <span>Run</span>
+                  </div>
+                  <div class="control-hint">
+                    <span class="key">X</span>
+                    <span>Shoot</span>
+                  </div>
+                </div>
+                <button class="btn magnetic game-start-btn" id="startGameBtn">
+                  <svg
+                    class="icon-svg-inline"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <polygon
+                      points="8,5 19,12 8,19"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  START GAME
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="game-overlay" id="gameOverScreen">
+            <div class="overlay-icon">
+              <svg
+                class="icon-svg-inline"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M9 12L11 14L15 10"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <h3 id="gameOverTitle">GAME OVER</h3>
+            <p>Final Score</p>
+            <div class="final-score" id="finalScore">0</div>
+            <button class="btn magnetic" id="restartBtn">
+              <svg
+                class="icon-svg-inline"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3 12C3 7.5 6.5 4 11 4C14 4 16.5 5.5 18 8"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M21 12C21 16.5 17.5 20 13 20C10 20 7.5 18.5 6 16"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M3 8L6 5L9 8M21 16L18 19L15 16"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              PLAY AGAIN
+            </button>
+          </div>
+
+          <!-- Mobile Touch Controls -->
+          <div class="mobile-controls" id="mobileControls">
+            <div class="controls-info mobile-controls-info">
+              <div class="mobile-hud">
+                <span
+                  ><svg
+                    class="icon-svg-inline"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <rect
+                      x="10"
+                      y="2"
+                      width="4"
+                      height="20"
+                      rx="2"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    />
+                    <circle
+                      cx="12"
+                      cy="4"
+                      r="3"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    />
+                  </svg>
+                  <span id="mobileLevel">1-1</span></span
+                >
+                <span
+                  ><svg
+                    class="icon-svg-inline"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span id="mobileScore">0</span></span
+                >
+              </div>
+            </div>
+            <div class="mobile-controller">
+              <div class="controller-left">
+                <div class="d-pad">
+                  <button
+                    class="touch-btn d-pad-btn"
+                    id="touchLeft"
+                    aria-label="Move Left"
+                  >
+                    <svg
+                      class="icon-svg-inline"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M15 18L9 12L15 6"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    class="touch-btn d-pad-btn"
+                    id="touchUp"
+                    aria-label="Move Up"
+                  >
+                    <svg
+                      class="icon-svg-inline"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M12 6L18 12L12 18M6 12H18"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                  <div class="d-pad-center"></div>
+                  <button
+                    class="touch-btn d-pad-btn"
+                    id="touchRight"
+                    aria-label="Move Right"
+                  >
+                    <svg
+                      class="icon-svg-inline"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M9 6L15 12L9 18"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    class="touch-btn d-pad-btn d-pad-down"
+                    id="touchDown"
+                    aria-label="Crouch"
+                  >
+                    <svg
+                      class="icon-svg-inline"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6 9L12 15L18 9"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="controller-right">
+                <div class="action-buttons">
+                  <button
+                    class="touch-btn action-btn shoot-btn"
+                    id="touchShoot"
+                    aria-label="Shoot"
+                  >
+                    <svg
+                      class="icon-svg-inline"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M8 5C8 5 10 8 10 12C10 16 8 19 8 19C8 19 6 16 6 12C6 8 8 5 8 5Z"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M10 19V22"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    class="touch-btn action-btn jump-btn"
+                    id="touchJump"
+                    aria-label="Jump"
+                  >
+                    <svg
+                      class="icon-svg-inline"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M12 19V5M12 5L7 10M12 5L17 10"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div class="run-button">
+                  <button
+                    class="touch-btn run-btn"
+                    id="touchRun"
+                    aria-label="Run"
+                  >
+                    <svg
+                      class="icon-svg-inline"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M13 2L3 14H12L11 22L21 10H12L13 2Z"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                    <span>RUN</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="controls-info desktop-only">
+            <p>
+              <strong
+                ><svg
+                  class="icon-svg-inline"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    x="2"
+                    y="4"
+                    width="20"
+                    height="16"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <path
+                    d="M6 8H10M6 12H14M6 16H10"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                Controls:</strong
+              >
+            </p>
+            <p>ARROWS / WASD to Move</p>
+            <p>SPACE / UP to Jump (Hold for higher)</p>
+            <p>SHIFT to Run</p>
+            <p>X to Shoot Fireball</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/game.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Performance optimization: Use RAF for animations
-            let rafId = null;
-            const animations = new Set();
-            
-            function runAnimations(timestamp) {
-                animations.forEach(fn => fn(timestamp));
-                rafId = requestAnimationFrame(runAnimations);
-            }
-            
-            // Hide loader after content loads
-            window.addEventListener('load', () => {
-                const loader = document.querySelector('.loader');
-                if (loader) {
-                    setTimeout(() => {
-                        loader.classList.add('hidden');
-                    }, 500);
-                }
-            });
-
-            // Optimized Custom Cursor
-            const cursor = document.querySelector('.cursor');
-            const cursorFollower = document.querySelector('.cursor-follower');
-            if (cursor && cursorFollower) {
-                let mouseX = 0, mouseY = 0;
-                let cursorX = 0, cursorY = 0;
-                let followerX = 0, followerY = 0;
-
-                // Throttled mouse move handler
-                let mouseMoveThrottle = false;
-                document.addEventListener('mousemove', (e) => {
-                    if (!mouseMoveThrottle) {
-                        mouseX = e.clientX;
-                        mouseY = e.clientY;
-                        mouseMoveThrottle = true;
-                        setTimeout(() => { mouseMoveThrottle = false; }, 16); // ~60fps
-                    }
-                });
-
-                function animateCursor() {
-                    const dx = mouseX - cursorX;
-                    const dy = mouseY - cursorY;
-                    cursorX += dx * 0.5;
-                    cursorY += dy * 0.5;
-                    cursor.style.transform = `translate3d(${cursorX - 10}px, ${cursorY - 10}px, 0)`;
-
-                    const fdx = mouseX - followerX;
-                    const fdy = mouseY - followerY;
-                    followerX += fdx * 0.1;
-                    followerY += fdy * 0.1;
-                    cursorFollower.style.transform = `translate3d(${followerX - 20}px, ${followerY - 20}px, 0)`;
-                }
-                animations.add(animateCursor);
-
-                // Cursor hover effects
-                const hoverElements = document.querySelectorAll('button, a, .skill-tag, .scramble-text');
-                hoverElements.forEach(el => {
-                    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-                    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-                });
-            }
-
-            // Optimized mouse gradient effect
-            let gradientThrottle = false;
-            const noiseBg = document.querySelector('.noise-bg');
-            if (noiseBg) {
-                document.addEventListener('mousemove', (e) => {
-                    if (!gradientThrottle) {
-                        const x = (e.clientX / window.innerWidth) * 100;
-                        const y = (e.clientY / window.innerHeight) * 100;
-                        noiseBg.style.setProperty('--mouse-x', x + '%');
-                        noiseBg.style.setProperty('--mouse-y', y + '%');
-                        gradientThrottle = true;
-                        setTimeout(() => { gradientThrottle = false; }, 100);
-                    }
-                });
-            }
-
-            // Optimized Particle System
-            const particlesContainer = document.getElementById('particles-container');
-            const maxParticles = 20; // Reduced for better performance
-            let activeParticles = 0;
-            
-            function createParticle(x, y) {
-                if (activeParticles >= maxParticles || !particlesContainer) return;
-                
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = x + 'px';
-                particle.style.top = y + 'px';
-                
-                const size = Math.random() * 4 + 2;
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
-                particle.style.background = '#00AFFF';
-                particle.style.borderRadius = '50%';
-                particle.style.boxShadow = `0 0 ${size * 2}px rgba(0, 175, 255, 0.5)`;
-                particlesContainer.appendChild(particle);
-                activeParticles++;
-                
-                // Use RAF for smoother animation
-                requestAnimationFrame(() => {
-                    particle.classList.add('active');
-                });
-                
-                setTimeout(() => {
-                    particle.remove();
-                    activeParticles--;
-                }, 3000);
-            }
-
-            // Create particles on mouse move (heavily throttled)
-            let particleThrottle = false;
-            document.addEventListener('mousemove', (e) => {
-                if (!particleThrottle && Math.random() > 0.8) { // Only 20% chance
-                    createParticle(e.clientX, e.clientY);
-                    particleThrottle = true;
-                    setTimeout(() => {
-                        particleThrottle = false;
-                    }, 200); // Increased throttle time
-                }
-            });
-
-            // Shared Bento Item Style
-            const bentoItems = document.querySelectorAll('.bento-item');
-            bentoItems.forEach(item => {
-                item.classList.add('bg-black/60', 'border', 'border-gray-800', 'rounded-lg', 'p-6', 'relative', 'overflow-hidden', 'backdrop-blur-sm');
-                
-                // Optimized magnetic effect
-                let magneticThrottle = false;
-                item.addEventListener('mousemove', (e) => {
-                    if (!magneticThrottle) {
-                        const rect = item.getBoundingClientRect();
-                        const x = e.clientX - rect.left;
-                        const y = e.clientY - rect.top;
-                        
-                        const centerX = rect.width / 2;
-                        const centerY = rect.height / 2;
-                        
-                        const deltaX = (x - centerX) / centerX;
-                        const deltaY = (y - centerY) / centerY;
-                        
-                        item.style.transform = `perspective(1000px) rotateY(${deltaX * 5}deg) rotateX(${-deltaY * 5}deg) translate3d(0, 0, 10px)`;
-                        item.style.borderColor = '#00AFFF';
-                        
-                        magneticThrottle = true;
-                        setTimeout(() => { magneticThrottle = false; }, 50);
-                    }
-                });
-                
-                item.addEventListener('mouseleave', () => {
-                    item.style.transform = '';
-                    item.style.borderColor = 'rgb(31 41 55 / 1)';
-                });
-            });
-
-            /*
-             * === Live Age Counter with 9 Decimal Places ===
-             */
-            const birthDate = new Date('2010-01-29T19:10:00'); // 29-01-2010 07:10PM
-            
-            function calculateAge() {
-                const now = new Date();
-                const ageInMilliseconds = now - birthDate;
-                const ageInYears = ageInMilliseconds / (365.25 * 24 * 60 * 60 * 1000);
-                return ageInYears;
-            }
-
-            let lastUpdateTime = 0;
-            function updateAge(timestamp) {
-                // Update only every 10ms for smooth animation
-                if (timestamp - lastUpdateTime >= 10) {
-                    const ageElement = document.getElementById('live-age');
-                    const progressBar = document.querySelector('.age-progress');
-                    if (ageElement) {
-                        const age = calculateAge();
-                        ageElement.textContent = age.toFixed(9);
-                        
-                        // Update progress bar based on fraction of current year
-                        if (progressBar) {
-                            const yearProgress = (age % 1) * 100;
-                            progressBar.style.width = yearProgress + '%';
-                        }
-                    }
-                    lastUpdateTime = timestamp;
-                }
-            }
-
-            // Add age update to animation loop
-            animations.add(updateAge);
-
-            /*
-             * === Optimized Scramble Text Animation ===
-             */
-            class ScrambleText {
-                constructor(element) {
-                    this.element = element;
-                    this.originalText = element.textContent;
-                    this.radius = parseFloat(element.dataset.scrambleRadius) || 50;
-                    this.duration = parseFloat(element.dataset.scrambleDuration) || 1.2;
-                    this.speed = parseFloat(element.dataset.scrambleSpeed) || 0.5;
-                    this.scrambleChars = element.dataset.scrambleChars || '!<>-_\\/[]{}—=+*^?#________';
-                    this.chars = [];
-                    this.isAnimating = false;
-                    this.animationFrame = null;
-                    this.lastFrameTime = 0;
-                    this.frameInterval = 1000 / 30; // 30fps for scramble animation
-                    this.init();
-                }
-
-                init() {
-                    if (!this.element) return;
-                    const text = this.element.textContent;
-                    this.element.innerHTML = '';
-                    
-                    // Pre-create character spans
-                    const fragment = document.createDocumentFragment();
-                    
-                    for (let i = 0; i < text.length; i++) {
-                        const span = document.createElement('span');
-                        span.className = 'char';
-                        span.textContent = text[i];
-                        span.dataset.content = text[i];
-                        fragment.appendChild(span);
-                        this.chars.push({
-                            element: span,
-                            original: text[i],
-                            isSpace: text[i] === ' ',
-                            isAnimating: false,
-                            progress: 0,
-                            targetProgress: 0,
-                            lastScrambleTime: 0,
-                            scrambleCount: 0,
-                            currentChar: text[i]
-                        });
-                    }
-                    
-                    this.element.appendChild(fragment);
-
-                    // Debounced event handlers
-                    let enterTimeout;
-                    this.element.addEventListener('mouseenter', () => {
-                        clearTimeout(enterTimeout);
-                        enterTimeout = setTimeout(() => this.handleEnter(), 0);
-                    });
-                    
-                    let moveThrottle = false;
-                    this.element.addEventListener('mousemove', (e) => {
-                        if (!moveThrottle) {
-                            this.handleMove(e);
-                            moveThrottle = true;
-                            setTimeout(() => { moveThrottle = false; }, 50);
-                        }
-                    });
-                    
-                    this.element.addEventListener('mouseleave', this.handleLeave.bind(this));
-                }
-
-                handleEnter() {
-                    if (!this.isAnimating) {
-                        this.isAnimating = true;
-                        this.lastFrameTime = performance.now();
-                        this.animate(this.lastFrameTime);
-                    }
-                }
-
-                handleMove(e) {
-                    const rect = this.element.getBoundingClientRect();
-                    const mouseX = e.clientX;
-                    const mouseY = e.clientY;
-
-                    // Batch DOM reads
-                    const charData = this.chars.map((char, index) => {
-                        const charRect = char.element.getBoundingClientRect();
-                        return {
-                            char,
-                            centerX: charRect.left + charRect.width / 2,
-                            centerY: charRect.top + charRect.height / 2
-                        };
-                    });
-
-                    // Batch calculations
-                    charData.forEach(({ char, centerX, centerY }) => {
-                        const dx = mouseX - centerX;
-                        const dy = mouseY - centerY;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-
-                        if (distance < this.radius) {
-                            const intensity = 1 - (distance / this.radius);
-                            char.targetProgress = intensity;
-                        } else {
-                            char.targetProgress = 0;
-                        }
-                    });
-                }
-
-                handleLeave() {
-                    this.chars.forEach(char => {
-                        char.targetProgress = 0;
-                    });
-                    setTimeout(() => {
-                        if (this.chars.every(char => char.progress < 0.01)) {
-                            this.isAnimating = false;
-                            if (this.animationFrame) {
-                                cancelAnimationFrame(this.animationFrame);
-                                this.animationFrame = null;
-                            }
-                        }
-                    }, 500);
-                }
-
-                animate(currentTime) {
-                    if (!this.isAnimating) return;
-                    
-                    // Frame rate limiting
-                    const deltaTime = currentTime - this.lastFrameTime;
-                    if (deltaTime < this.frameInterval) {
-                        this.animationFrame = requestAnimationFrame(this.animate.bind(this));
-                        return;
-                    }
-                    
-                    this.lastFrameTime = currentTime - (deltaTime % this.frameInterval);
-                    
-                    // Batch DOM updates
-                    const updates = [];
-                    
-                    this.chars.forEach(char => {
-                        const diff = char.targetProgress - char.progress;
-                        char.progress += diff * 0.15;
-
-                        if (char.progress > 0.01 && !char.isSpace) {
-                            if (!char.isAnimating) {
-                                char.isAnimating = true;
-                                updates.push(() => char.element.classList.add('scrambling'));
-                            }
-                            
-                            if (currentTime - char.lastScrambleTime > 50) {
-                                if (Math.random() < char.progress * this.speed) {
-                                    const randomChar = this.scrambleChars[Math.floor(Math.random() * this.scrambleChars.length)];
-                                    if (char.currentChar !== randomChar) {
-                                        char.currentChar = randomChar;
-                                        updates.push(() => char.element.textContent = randomChar);
-                                    }
-                                    char.scrambleCount++;
-                                } else if (Math.random() < 0.3 || char.scrambleCount > 10) {
-                                    if (char.currentChar !== char.original) {
-                                        char.currentChar = char.original;
-                                        updates.push(() => char.element.textContent = char.original);
-                                    }
-                                    char.scrambleCount = 0;
-                                }
-                                char.lastScrambleTime = currentTime;
-                            }
-                        } else {
-                            if (char.isAnimating) {
-                                char.isAnimating = false;
-                                updates.push(() => char.element.classList.remove('scrambling'));
-                            }
-                            if (char.currentChar !== char.original) {
-                                char.currentChar = char.original;
-                                updates.push(() => char.element.textContent = char.original);
-                            }
-                        }
-                    });
-
-                    // Apply all DOM updates at once
-                    if (updates.length > 0) {
-                        requestAnimationFrame(() => {
-                            updates.forEach(update => update());
-                        });
-                    }
-
-                    this.animationFrame = requestAnimationFrame(this.animate.bind(this));
-                }
-            }
-
-            // Initialize scramble text
-            document.querySelectorAll('.scramble-text').forEach(element => {
-                new ScrambleText(element);
-            });
-
-            /*
-             * === Optimized 3D Crystal Animation ===
-             */
-            const canvas = document.getElementById('three-canvas');
-            const canvasContainer = canvas ? canvas.parentElement : null;
-            if (canvas && canvasContainer) {
-                const scene = new THREE.Scene();
-                const camera = new THREE.PerspectiveCamera(75, canvasContainer.clientWidth / canvasContainer.clientHeight, 0.1, 1000);
-                const renderer = new THREE.WebGLRenderer({ 
-                    canvas: canvas, 
-                    alpha: true, 
-                    antialias: false,
-                    powerPreference: "high-performance"
-                });
-                
-                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-                
-                // Simplified crystal setup
-                const crystalGroup = new THREE.Group();
-                scene.add(crystalGroup);
-
-                // Core crystal with reduced complexity
-                const coreMaterial = new THREE.MeshBasicMaterial({ 
-                    color: 0x00AFFF, 
-                    wireframe: true,
-                    transparent: true,
-                    opacity: 0.8
-                });
-                
-                const coreGeometry = new THREE.IcosahedronGeometry(1.5, 0);
-                const coreCrystal = new THREE.Mesh(coreGeometry, coreMaterial);
-                crystalGroup.add(coreCrystal);
-
-                // Reduced orbiting crystals
-                const orbitingCrystals = [];
-                const orbitMaterial = new THREE.MeshBasicMaterial({ 
-                    color: 0x00AFFF, 
-                    wireframe: true,
-                    transparent: true,
-                    opacity: 0.6
-                });
-
-                for (let i = 0; i < 5; i++) {
-                    const size = 0.3 + Math.random() * 0.3;
-                    const geometry = new THREE.TetrahedronGeometry(size, 0);
-                    
-                    const crystal = new THREE.Mesh(geometry, orbitMaterial);
-                    const angle = (i / 5) * Math.PI * 2;
-                    const radius = 2.5;
-                    
-                    crystal.position.x = Math.cos(angle) * radius;
-                    crystal.position.z = Math.sin(angle) * radius;
-                    crystal.position.y = (Math.random() - 0.5) * 2;
-                    
-                    crystal.userData = {
-                        angle: angle,
-                        radius: radius,
-                        speed: 0.5 + Math.random() * 0.5,
-                        yOffset: crystal.position.y
-                    };
-                    
-                    orbitingCrystals.push(crystal);
-                    crystalGroup.add(crystal);
-                }
-
-                // Reduced particle field
-                const particleCount = 100;
-                const particlesGeometry = new THREE.BufferGeometry();
-                const particlePositions = new Float32Array(particleCount * 3);
-
-                for (let i = 0; i < particleCount; i++) {
-                    particlePositions[i * 3] = (Math.random() - 0.5) * 10;
-                    particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 10;
-                    particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 10;
-                }
-
-                particlesGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
-                const particlesMaterial = new THREE.PointsMaterial({
-                    color: 0x00AFFF,
-                    size: 0.05,
-                    transparent: true,
-                    opacity: 0.6
-                });
-                const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-                scene.add(particles);
-
-                camera.position.z = 7;
-                
-                // Mouse tracking
-                let targetRotationX = 0;
-                let targetRotationY = 0;
-                
-                function onMouseMove(event) {
-                    const x = (event.clientX / window.innerWidth) * 2 - 1;
-                    const y = -(event.clientY / window.innerHeight) * 2 + 1;
-                    
-                    targetRotationX = y * 0.5;
-                    targetRotationY = x * 0.5;
-                }
-                
-                // Throttled mouse move for 3D
-                let threeDMouseThrottle = false;
-                window.addEventListener('mousemove', (e) => {
-                    if (!threeDMouseThrottle) {
-                        onMouseMove(e);
-                        threeDMouseThrottle = true;
-                        setTimeout(() => { threeDMouseThrottle = false; }, 50);
-                    }
-                });
-
-                // Optimized animation loop
-                let time = 0;
-                let lastTime = 0;
-                function animate(currentTime) {
-                    requestAnimationFrame(animate);
-                    
-                    // Limit to 30fps for 3D animation
-                    if (currentTime - lastTime < 33) return;
-                    lastTime = currentTime;
-                    
-                    time += 0.01;
-                    
-                    // Rotate core crystal
-                    coreCrystal.rotation.x += 0.001;
-                    coreCrystal.rotation.y += 0.002;
-                    
-                    // Animate orbiting crystals
-                    orbitingCrystals.forEach((crystal, index) => {
-                        const userData = crystal.userData;
-                        userData.angle += userData.speed * 0.01;
-                        
-                        crystal.position.x = Math.cos(userData.angle) * userData.radius;
-                        crystal.position.z = Math.sin(userData.angle) * userData.radius;
-                        crystal.position.y = userData.yOffset + Math.sin(time + index) * 0.3;
-                        
-                        crystal.rotation.x += 0.01;
-                        crystal.rotation.y += 0.01;
-                    });
-                    
-                    // Smooth camera movement
-                    crystalGroup.rotation.x += (targetRotationX - crystalGroup.rotation.x) * 0.05;
-                    crystalGroup.rotation.y += (targetRotationY - crystalGroup.rotation.y) * 0.05;
-                    
-                    renderer.render(scene, camera);
-                }
-                
-                // Handle resize
-                function handleResize() {
-                    const width = canvasContainer.clientWidth;
-                    const height = canvasContainer.clientHeight;
-                    camera.aspect = width / height;
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(width, height);
-                }
-                
-                // Debounced resize
-                let resizeTimeout;
-                window.addEventListener('resize', () => {
-                    clearTimeout(resizeTimeout);
-                    resizeTimeout = setTimeout(handleResize, 250);
-                });
-                handleResize();
-                animate(0);
-            }
-
-            /*
-             * === Optimized Scroll Animations with Smoother Transitions ===
-             */
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // Use RAF for smoother animation triggering
-                        requestAnimationFrame(() => {
-                            entry.target.classList.add('is-visible');
-                            
-                            // Special handling for skills container
-                            const skillsContainer = entry.target.querySelector('.skills-container');
-                            if (skillsContainer) {
-                                skillsContainer.classList.add('skills-visible');
-                            }
-                        });
-                        
-                        // Unobserve after animation to save resources
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
-
-            /*
-             * === Contact Buttons with Enhanced Feedback ===
-             */
-            // Secure context check
-            function isSecureContext() {
-                return window.isSecureContext || location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-            }
-
-            // Generic copy function with enhanced error handling
-            async function copyToClipboard(text, button, feedback) {
-                const ripple = document.createElement('span');
-                const rect = button.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                const x = event.clientX - rect.left - size / 2;
-                const y = event.clientY - rect.top - size / 2;
-
-                ripple.style.width = ripple.style.height = size + 'px';
-                ripple.style.left = x + 'px';
-                ripple.style.top = y + 'px';
-                ripple.classList.add('ripple');
-                button.appendChild(ripple);
-                setTimeout(() => ripple.remove(), 600);
-
-                try {
-                    if (isSecureContext() && navigator.clipboard) {
-                        await navigator.clipboard.writeText(text);
-                        feedback.style.opacity = '1';
-                        feedback.style.transform = 'translate(-50%, -10px)';
-                        button.style.animation = 'success-pulse 0.5s ease';
-                        setTimeout(() => {
-                            feedback.style.opacity = '0';
-                            feedback.style.transform = 'translate(-50%, 0)';
-                            button.style.animation = '';
-                        }, 2000);
-                    } else {
-                        // Fallback for non-secure contexts or older browsers
-                        const textArea = document.createElement('textarea');
-                        textArea.value = text;
-                        textArea.style.position = 'fixed';
-                        textArea.style.left = '-999999px';
-                        textArea.style.top = '-999999px';
-                        document.body.appendChild(textArea);
-                        textArea.focus();
-                        textArea.select();
-                        try {
-                            const successful = document.execCommand('copy');
-                            if (successful) {
-                                feedback.style.opacity = '1';
-                                feedback.style.transform = 'translate(-50%, -10px)';
-                                button.style.animation = 'success-pulse 0.5s ease';
-                                setTimeout(() => {
-                                    feedback.style.opacity = '0';
-                                    feedback.style.transform = 'translate(-50%, 0)';
-                                    button.style.animation = '';
-                                }, 2000);
-                            } else {
-                                throw new Error('Copy command failed');
-                            }
-                        } finally {
-                            document.body.removeChild(textArea);
-                        }
-                    }
-                } catch (err) {
-                    console.error('Copy failed:', err.message || err);
-                    feedback.textContent = 'ERROR';
-                    feedback.style.backgroundColor = '#FF0000';
-                    feedback.style.opacity = '1';
-                    setTimeout(() => {
-                        feedback.style.opacity = '0';
-                        feedback.textContent = 'COPIED';
-                        feedback.style.backgroundColor = '';
-                    }, 2000);
-                }
-            }
-
-            // Discord Button
-            const discordButton = document.getElementById('discord-button');
-            const discordCopyFeedback = document.getElementById('discord-copy-feedback');
-            const discordId = 'appuzlota';
-
-            if (discordButton && discordCopyFeedback) {
-                discordButton.addEventListener('click', (e) => {
-                    copyToClipboard(discordId, discordButton, discordCopyFeedback);
-                });
-            }
-
-            // Email Button
-            const emailButton = document.getElementById('email-button');
-            const emailCopyFeedback = document.getElementById('email-copy-feedback');
-            const emailId = 'hello@appuzlota.me';
-
-            if (emailButton && emailCopyFeedback) {
-                emailButton.addEventListener('click', (e) => {
-                    copyToClipboard(emailId, emailButton, emailCopyFeedback);
-                });
-            }
-
-            /*
-             * === Optimized Magnetic Hover Effect for Skills ===
-             */
-            const skillTags = document.querySelectorAll('.skill-tag');
-            
-            skillTags.forEach(tag => {
-                let magneticThrottle = false;
-                tag.addEventListener('mousemove', (e) => {
-                    if (!magneticThrottle) {
-                        const rect = tag.getBoundingClientRect();
-                        const x = e.clientX - rect.left;
-                        const y = e.clientY - rect.top;
-                        
-                        const centerX = rect.width / 2;
-                        const centerY = rect.height / 2;
-                        
-                        const deltaX = (x - centerX) / centerX;
-                        const deltaY = (y - centerY) / centerY;
-                        
-                        tag.style.transform = `translate3d(${deltaX * 3}px, ${deltaY * 3}px, 0) translateY(-2px)`;
-                        
-                        magneticThrottle = true;
-                        setTimeout(() => { magneticThrottle = false; }, 50);
-                    }
-                });
-                
-                tag.addEventListener('mouseleave', () => {
-                    tag.style.transform = '';
-                });
-            });
-
-            /*
-             * === Performance Optimizations ===
-             */
-            // Start RAF loop
-            if (animations.size > 0) {
-                runAnimations();
-            }
-
-            // Pause animations when tab is not visible
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden) {
-                    if (rafId) {
-                        cancelAnimationFrame(rafId);
-                        rafId = null;
-                    }
-                    // Pause particle animations
-                    document.querySelectorAll('.particle').forEach(p => p.style.animationPlayState = 'paused');
-                } else {
-                    // Resume animations
-                    if (!rafId && animations.size > 0) {
-                        runAnimations();
-                    }
-                    document.querySelectorAll('.particle').forEach(p => p.style.animationPlayState = 'running');
-                }
-            });
-
-            /*
-             * === Easter Egg: Konami Code ===
-             */
-            const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-            let konamiIndex = 0;
-
-            document.addEventListener('keydown', (e) => {
-                if (e.key === konamiCode[konamiIndex]) {
-                    konamiIndex++;
-                    
-                    if (konamiIndex === konamiCode.length) {
-                        activateEasterEgg();
-                        konamiIndex = 0;
-                    }
-                } else {
-                    konamiIndex = 0;
-                }
-            });
-
-            function activateEasterEgg() {
-                document.body.style.animation = 'rainbow-bg 3s linear infinite';
-                
-                // Create explosion of particles
-                for (let i = 0; i < 30; i++) {
-                    setTimeout(() => {
-                        const x = window.innerWidth / 2 + (Math.random() - 0.5) * 200;
-                        const y = window.innerHeight / 2 + (Math.random() - 0.5) * 200;
-                        createParticle(x, y);
-                    }, i * 30);
-                }
-                
-                // Show secret message
-                const message = document.createElement('div');
-                message.textContent = '// SYSTEM OVERLOAD //';
-                message.style.cssText = `
-                    position: fixed;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    font-family: 'VT323', monospace;
-                    font-size: 4rem;
-                    color: #00AFFF;
-                    text-shadow: 0 0 20px rgba(0, 175, 255, 0.8);
-                    z-index: 10000;
-                    animation: glitch-text 0.3s infinite;
-                `;
-                document.body.appendChild(message);
-                
-                setTimeout(() => {
-                    message.remove();
-                    document.body.style.animation = '';
-                }, 3000);
-            }
-
-            /*
-             * === Touch Support for Mobile ===
-             */
-            // Add touch support for interactive elements
-            if ('ontouchstart' in window) {
-                document.body.classList.add('touch-device');
-                
-                // Convert hover effects to tap effects
-                bentoItems.forEach(item => {
-                    item.addEventListener('touchstart', () => {
-                        item.style.borderColor = '#00AFFF';
-                    });
-                    
-                    item.addEventListener('touchend', () => {
-                        setTimeout(() => {
-                            item.style.borderColor = 'rgb(31 41 55 / 1)';
-                        }, 300);
-                    });
-                });
-            }
-
-            /*
-             * === Accessibility Enhancements ===
-             */
-            // Respect prefers-reduced-motion
-            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-            
-            function handleReducedMotionChange() {
-                if (prefersReducedMotion.matches) {
-                    // Disable complex animations
-                    document.querySelectorAll('.particle').forEach(p => p.remove());
-                    if (noiseBg) {
-                        noiseBg.classList.add('reduced-motion');
-                    }
-                    // Stop RAF animations
-                    if (rafId) {
-                        cancelAnimationFrame(rafId);
-                        rafId = null;
-                    }
-                }
-            }
-            
-            prefersReducedMotion.addEventListener('change', handleReducedMotionChange);
-            handleReducedMotionChange();
-
-            // Keyboard navigation improvements
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Tab') {
-                    document.body.classList.add('keyboard-nav');
-                }
-            });
-
-            document.addEventListener('mousedown', () => {
-                document.body.classList.remove('keyboard-nav');
-            });
-
-            // Cleanup function for better memory management
-            window.addEventListener('beforeunload', () => {
-                if (rafId) {
-                    cancelAnimationFrame(rafId);
-                }
-                animations.clear();
-            });
-        });
-
-        // Additional CSS for new features
-        const style = document.createElement('style');
-        style.textContent = `
-            /* Ripple Effect */
-            .ripple {
-                position: absolute;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.6);
-                transform: scale(0);
-                animation: ripple-animation 0.6s ease-out;
-                pointer-events: none;
-            }
-
-            @keyframes ripple-animation {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
-            }
-
-            /* Success Pulse */
-            @keyframes success-pulse {
-                0% { transform: scale(1); }
-                50% { transform: scale(1.05); }
-                100% { transform: scale(1); }
-            }
-
-            /* Rainbow Background (Easter Egg) */
-            @keyframes rainbow-bg {
-                0% { filter: hue-rotate(0deg); }
-                100% { filter: hue-rotate(360deg); }
-            }
-
-            /* Glitch Text (Easter Egg) */
-            @keyframes glitch-text {
-                0% { text-shadow: 0.05em 0 0 #00fffc, -0.05em -0.025em 0 #fc00ff, 0.025em 0.05em 0 #fffc00; }
-                15% { text-shadow: 0.05em 0 0 #00fffc, -0.05em -0.025em 0 #fc00ff, 0.025em 0.05em 0 #fffc00; }
-                16% { text-shadow: -0.05em -0.025em 0 #00fffc, 0.025em 0.025em 0 #fc00ff, -0.05em -0.05em 0 #fffc00; }
-                49% { text-shadow: -0.05em -0.025em 0 #00fffc, 0.025em 0.025em 0 #fc00ff, -0.05em -0.05em 0 #fffc00; }
-                50% { text-shadow: 0.025em 0.05em 0 #00fffc, 0.05em 0 0 #fc00ff, 0 -0.05em 0 #fffc00; }
-                99% { text-shadow: 0.025em 0.05em 0 #00fffc, 0.05em 0 0 #fc00ff, 0 -0.05em 0 #fffc00; }
-                100% { text-shadow: -0.025em 0 0 #00fffc, -0.025em -0.025em 0 #fc00ff, -0.025em -0.05em 0 #fffc00; }
-            }
-
-            /* Reduced Motion Support */
-            .reduced-motion::before { animation: none !important; }
-            .reduced-motion * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-
-            /* Keyboard Navigation */
-            .keyboard-nav *:focus {
-                outline: 2px solid #00AFFF;
-                outline-offset: 2px;
-            }
-
-            /* Touch Device Optimizations */
-            .touch-device .cursor,
-            .touch-device .cursor-follower {
-                display: none;
-            }
-        `;
-        document.head.appendChild(style);
+      window.addEventListener("load", () => {
+        setTimeout(() => {
+          const loadingOverlay = document.getElementById("loadingOverlay");
+          if (loadingOverlay) {
+            loadingOverlay.classList.add("hidden");
+            setTimeout(() => {
+              loadingOverlay.style.display = "none";
+            }, 500);
+          }
+        }, 500);
+      });
     </script>
-</body>
+  </body>
 </html>
