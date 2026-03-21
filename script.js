@@ -8,10 +8,10 @@
 
   // --- SYNC CONFIG (Edit this to nudge the vibe) ---
   const VIBE_CONFIG = {
-    SYNC_OFFSET: 0.3, // Global nudge (negative = earlier, positive = later)
-    SCROLL_SPEED: 0.5,  // Transition duration for scrolling
-    LYRIC_INTERVAL: 2.9, // Default seconds between lines for the fast part
-    BRIDGE_INTERVAL: 4.0 // Seconds between lines for the "Ready" part
+    SYNC_OFFSET: 0.8, // Increased delay to fix "too fast" issue
+    SCROLL_SPEED: 0.5,
+    LYRIC_INTERVAL: 3.1, // Slowed down intervals between lines
+    BRIDGE_INTERVAL: 4.2
   };
 
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
@@ -135,30 +135,30 @@
     const lyricsData = [
       { time: 0, text: "♪ Let It Happen..." },
       { time: 23, text: "I cannot vanish, you will not scare me" },
-      { time: 25.9, text: "Try to get through it, try to push through it" },
-      { time: 28.8, text: "You were not thinking that I will not do it" },
-      { time: 31.7, text: "They be lovin' someone and I'm another story" },
-      { time: 34.6, text: "Take the next ticket, get the next train" },
-      { time: 37.5, text: "Why would I do it? Anyone'd think that" },
-      { time: 40.4, text: "I cannot vanish, you will not scare me" },
-      { time: 43.3, text: "Try to get through it, try to push through it" },
-      { time: 46.2, text: "You were not thinking that I will not do it" },
-      { time: 49.1, text: "They be lovin' someone and I'm another story" },
-      { time: 52.0, text: "Take the next ticket, get the next train" },
-      { time: 54.9, text: "Why would I do it? Anyone'd think that" },
-      { time: 57.8, text: "Try to get through it, try to push through it" },
-      { time: 60.7, text: "You were not thinking that I will not do it" },
-      { time: 63.6, text: "They be lovin' someone and I'm another story" },
-      { time: 66.5, text: "Take the next ticket, get the next train" },
-      { time: 69.4, text: "Why would I do it? Anyone'd think that" },
-      { time: 72.5, text: "Baby, now I'm ready, moving on" },
-      { time: 76.5, text: "Oh, but maybe I was ready all along" },
-      { time: 80.5, text: "Oh, I'm ready for the moment and the sound" },
-      { time: 84.5, text: "Oh, but maybe I was ready all along" },
-      { time: 88.5, text: "Baby, now I'm ready, moving on" },
-      { time: 92.5, text: "Oh, but maybe I was ready all along" },
-      { time: 96.5, text: "Oh, I'm ready for the moment and the sound" },
-      { time: 100.5, text: "Oh, but maybe I was ready all along" }
+      { time: 26.1, text: "Try to get through it, try to push through it" },
+      { time: 29.2, text: "You were not thinking that I will not do it" },
+      { time: 32.3, text: "They be lovin' someone and I'm another story" },
+      { time: 35.4, text: "Take the next ticket, get the next train" },
+      { time: 38.5, text: "Why would I do it? Anyone'd think that" },
+      { time: 41.6, text: "I cannot vanish, you will not scare me" },
+      { time: 44.7, text: "Try to get through it, try to push through it" },
+      { time: 47.8, text: "You were not thinking that I will not do it" },
+      { time: 50.9, text: "They be lovin' someone and I'm another story" },
+      { time: 54.0, text: "Take the next ticket, get the next train" },
+      { time: 57.1, text: "Why would I do it? Anyone'd think that" },
+      { time: 60.2, text: "Try to get through it, try to push through it" },
+      { time: 63.3, text: "You were not thinking that I will not do it" },
+      { time: 66.4, text: "They be lovin' someone and I'm another story" },
+      { time: 69.5, text: "Take the next ticket, get the next train" },
+      { time: 72.6, text: "Why would I do it? Anyone'd think that" },
+      { time: 76.0, text: "Baby, now I'm ready, moving on" },
+      { time: 80.2, text: "Oh, but maybe I was ready all along" },
+      { time: 84.4, text: "Oh, I'm ready for the moment and the sound" },
+      { time: 88.6, text: "Oh, but maybe I was ready all along" },
+      { time: 92.8, text: "Baby, now I'm ready, moving on" },
+      { time: 97.0, text: "Oh, but maybe I was ready all along" },
+      { time: 101.2, text: "Oh, I'm ready for the moment and the sound" },
+      { time: 105.4, text: "Oh, but maybe I was ready all along" }
     ];
 
     lList.innerHTML = lyricsData.map((l, i) => `<div class="lyric-line" data-index="${i}">${l.text}</div>`).join('');
@@ -195,9 +195,8 @@
           else l.classList.remove("active");
         });
 
-        // Frame-perfect centering
         const lineEl = lines[activeIdx];
-        const scrollOffset = lineEl.offsetTop - 90; // Align to focus area
+        const scrollOffset = lineEl.offsetTop - 55; // Updated centering for smaller height
         lList.style.transform = `translateY(-${scrollOffset}px)`;
       }
     });
