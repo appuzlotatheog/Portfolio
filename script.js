@@ -6,6 +6,14 @@
 (function () {
   "use strict";
 
+  // --- SYNC CONFIG (Edit this to nudge the vibe) ---
+  const VIBE_CONFIG = {
+    SYNC_OFFSET: -0.2, // Global nudge (negative = earlier, positive = later)
+    SCROLL_SPEED: 0.5,  // Transition duration for scrolling
+    LYRIC_INTERVAL: 2.9, // Default seconds between lines for the fast part
+    BRIDGE_INTERVAL: 4.0 // Seconds between lines for the "Ready" part
+  };
+
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
@@ -17,32 +25,21 @@
      LOADER
      ------------------------------------------------- */
   function initLoader() {
-    const loader = $("#loader");
-    const bar = $("#loaderBar");
-    const nav = $("#nav");
-
+    const loader = $("#loader"), bar = $("#loaderBar"), nav = $("#nav");
     let progress = 0;
     const interval = setInterval(() => {
-      progress += Math.random() * 25 + 5;
+      progress += Math.random() * 30 + 5;
       if (progress > 100) progress = 100;
       bar.style.width = progress + "%";
-
       if (progress >= 100) {
         clearInterval(interval);
         setTimeout(() => {
-          gsap.to(loader, {
-            yPercent: -100,
-            duration: 0.8,
-            ease: "power4.inOut",
-            onComplete: () => {
-              loader.style.display = "none";
-              animateHeroEntrance();
-              nav.classList.add("visible");
-            },
-          });
+          gsap.to(loader, { yPercent: -100, duration: 0.8, ease: "power4.inOut", onComplete: () => {
+            loader.style.display = "none"; animateHeroEntrance(); nav.classList.add("visible");
+          }});
         }, 400);
       }
-    }, 100);
+    }, 80);
   }
 
   /* -------------------------------------------------
@@ -57,11 +54,7 @@
       .to(".hero-name", { opacity: 1, y: 0, duration: 1 }, "-=0.5")
       .to(".hero-role-wrapper", { opacity: 1, scale: 1, duration: 0.6 }, "-=0.6")
       .to(".hero-desc", { opacity: 1, x: 0, duration: 0.6 }, "-=0.4")
-      .fromTo(".hero-cta-group .btn", 
-        { opacity: 0, y: 30 }, 
-        { opacity: 1, y: 0, stagger: 0.15, duration: 0.6, clearProps: "opacity,transform" }, 
-        "-=0.3"
-      )
+      .fromTo(".hero-cta-group .btn", { opacity: 0, y: 30 }, { opacity: 1, y: 0, stagger: 0.15, duration: 0.6, clearProps: "all" }, "-=0.3")
       .to(".hero-card, .hero-arch-sticker, .hero-status-badge", { opacity: 1, scale: 1, stagger: 0.1, duration: 0.8, ease: "back.out(1.7)", clearProps: "scale" }, "-=0.5");
     tl.call(startTyping, null, "-=0.5");
   }
@@ -72,16 +65,10 @@
   function initScrollAnimations() {
     if (typeof ScrollTrigger === "undefined") return;
     $$(".anim-reveal").forEach((el) => {
-      gsap.from(el, {
-        scrollTrigger: { trigger: el, start: "top 90%", once: true, onEnter: () => el.classList.add("anim-active") },
-        opacity: 0, y: 50, rotate: 3, duration: 1, ease: "power3.out"
-      });
+      gsap.from(el, { scrollTrigger: { trigger: el, start: "top 90%", once: true, onEnter: () => el.classList.add("anim-active") }, opacity: 0, y: 50, rotate: 3, duration: 1, ease: "power3.out" });
     });
     $$(".tools-grid").forEach((grid) => {
-      gsap.from($$(".tool-category", grid), {
-        scrollTrigger: { trigger: grid, start: "top 80%", once: true },
-        opacity: 0, y: 60, scale: 0.9, stagger: 0.1, duration: 0.8, ease: "back.out(1.2)", clearProps: "all"
-      });
+      gsap.from($$(".tool-category", grid), { scrollTrigger: { trigger: grid, start: "top 80%", once: true }, opacity: 0, y: 60, scale: 0.9, stagger: 0.1, duration: 0.8, ease: "back.out(1.2)", clearProps: "all" });
     });
   }
 
@@ -90,20 +77,12 @@
      ------------------------------------------------- */
   function startTyping() {
     const roles = ["AI Prompting God", "Chaos Engineer", "Vibe Coder", "Sentience Seeker", "I use Arch btw", "Coffee Disposer"];
-    const el = $("#heroRole");
-    if (!el) return;
+    const el = $("#heroRole"); if (!el) return;
     let rI = 0, cI = 0, isD = false, del = 100;
     function type() {
       const cur = roles[rI];
-      if (!isD) {
-        el.textContent = cur.substring(0, cI + 1);
-        cI++; del = 70;
-        if (cI === cur.length) { isD = true; del = 2000; }
-      } else {
-        el.textContent = cur.substring(0, cI - 1);
-        cI--; del = 40;
-        if (cI === 0) { isD = false; rI = (rI + 1) % roles.length; del = 500; }
-      }
+      if (!isD) { el.textContent = cur.substring(0, cI + 1); cI++; del = 70; if (cI === cur.length) { isD = true; del = 2000; } }
+      else { el.textContent = cur.substring(0, cI - 1); cI--; del = 40; if (cI === 0) { isD = false; rI = (rI + 1) % roles.length; del = 500; } }
       setTimeout(type, del);
     }
     type();
@@ -125,8 +104,7 @@
     });
     if (mBtn && mMenu) {
       mBtn.addEventListener("click", () => {
-        isOpen = mBtn.classList.toggle("open");
-        mMenu.classList.toggle("open");
+        isOpen = mBtn.classList.toggle("open"); mMenu.classList.toggle("open");
         document.body.style.overflow = isOpen ? "hidden" : "";
         if (isOpen) {
           nav.classList.add("visible"); nav.classList.remove("nav-hidden");
@@ -138,7 +116,8 @@
       l.addEventListener("click", e => {
         const id = l.getAttribute("href"); if (id === "#") return;
         e.preventDefault(); const t = $(id);
-        if (t) { isOpen = false; if(mBtn) mBtn.classList.remove("open"); if(mMenu) mMenu.classList.remove("open"); document.body.style.overflow = "";
+        if (t) {
+          isOpen = false; if(mBtn) mBtn.classList.remove("open"); if(mMenu) mMenu.classList.remove("open"); document.body.style.overflow = "";
           const y = t.getBoundingClientRect().top + window.scrollY - 80;
           window.scrollTo({ top: y, behavior: "smooth" });
         }
@@ -147,64 +126,52 @@
   }
 
   /* -------------------------------------------------
-     MUSIC & ADVANCED LYRIC SYNC
+     ADVANCED MUSIC & LYRIC ENGINE
      ------------------------------------------------- */
   function initMusic() {
     const audio = $("#bgMusic"), toggle = $("#musicToggle"), icon = $("#musicIcon"), text = $(".music-text", toggle), lContainer = $("#lyricsContainer"), lList = $("#lyricsList"), pBar = $("#musicProgressBar");
     if (!audio || !toggle) return;
 
-    // Nudge this if lyrics are still slightly off (+ forward, - backward)
-    const SYNC_OFFSET = -0.5; 
-
     const lyricsData = [
-      { time: 0, text: "♪ Waiting for the drop..." },
+      { time: 0, text: "♪ Let It Happen..." },
       { time: 23, text: "I cannot vanish, you will not scare me" },
-      { time: 25.8, text: "Try to get through it, try to push through it" },
-      { time: 28.6, text: "You were not thinking that I will not do it" },
-      { time: 31.4, text: "They be lovin' someone and I'm another story" },
-      { time: 34.2, text: "Take the next ticket, get the next train" },
-      { time: 37.0, text: "Why would I do it? Anyone'd think that" },
-      { time: 39.8, text: "I cannot vanish, you will not scare me" },
-      { time: 42.6, text: "Try to get through it, try to push through it" },
-      { time: 45.4, text: "You were not thinking that I will not do it" },
-      { time: 48.2, text: "They be lovin' someone and I'm another story" },
-      { time: 51.0, text: "Take the next ticket, get the next train" },
-      { time: 53.8, text: "Why would I do it? Anyone'd think that" },
-      { time: 56.6, text: "Try to get through it, try to push through it" },
-      { time: 59.4, text: "You were not thinking that I will not do it" },
-      { time: 62.2, text: "They be lovin' someone and I'm another story" },
-      { time: 65.0, text: "Take the next ticket, get the next train" },
-      { time: 67.8, text: "Why would I do it? Anyone'd think that" },
-      { time: 71.0, text: "Baby, now I'm ready, moving on" },
-      { time: 75.0, text: "Oh, but maybe I was ready all along" },
-      { time: 79.0, text: "Oh, I'm ready for the moment and the sound" },
-      { time: 83.0, text: "Oh, but maybe I was ready all along" },
-      { time: 87.0, text: "Baby, now I'm ready, moving on" },
-      { time: 91.0, text: "Oh, but maybe I was ready all along" },
-      { time: 95.0, text: "Oh, I'm ready for the moment and the sound" },
-      { time: 99.0, text: "Oh, but maybe I was ready all along" }
+      { time: 25.9, text: "Try to get through it, try to push through it" },
+      { time: 28.8, text: "You were not thinking that I will not do it" },
+      { time: 31.7, text: "They be lovin' someone and I'm another story" },
+      { time: 34.6, text: "Take the next ticket, get the next train" },
+      { time: 37.5, text: "Why would I do it? Anyone'd think that" },
+      { time: 40.4, text: "I cannot vanish, you will not scare me" },
+      { time: 43.3, text: "Try to get through it, try to push through it" },
+      { time: 46.2, text: "You were not thinking that I will not do it" },
+      { time: 49.1, text: "They be lovin' someone and I'm another story" },
+      { time: 52.0, text: "Take the next ticket, get the next train" },
+      { time: 54.9, text: "Why would I do it? Anyone'd think that" },
+      { time: 57.8, text: "Try to get through it, try to push through it" },
+      { time: 60.7, text: "You were not thinking that I will not do it" },
+      { time: 63.6, text: "They be lovin' someone and I'm another story" },
+      { time: 66.5, text: "Take the next ticket, get the next train" },
+      { time: 69.4, text: "Why would I do it? Anyone'd think that" },
+      { time: 72.5, text: "Baby, now I'm ready, moving on" },
+      { time: 76.5, text: "Oh, but maybe I was ready all along" },
+      { time: 80.5, text: "Oh, I'm ready for the moment and the sound" },
+      { time: 84.5, text: "Oh, but maybe I was ready all along" },
+      { time: 88.5, text: "Baby, now I'm ready, moving on" },
+      { time: 92.5, text: "Oh, but maybe I was ready all along" },
+      { time: 96.5, text: "Oh, I'm ready for the moment and the sound" },
+      { time: 100.5, text: "Oh, but maybe I was ready all along" }
     ];
 
-    // Inject lyrics into DOM
-    lList.innerHTML = lyricsData.map((l, i) => `<div class="lyric-line" id="line-${i}">${l.text}</div>`).join('');
+    lList.innerHTML = lyricsData.map((l, i) => `<div class="lyric-line" data-index="${i}">${l.text}</div>`).join('');
 
     audio.volume = 0.4;
 
     toggle.addEventListener("click", () => {
       if (audio.paused) {
-        text.textContent = "Loading...";
-        const loadingTimeout = setTimeout(() => {
-          if (audio.paused && text.textContent === "Loading...") {
-            text.textContent = "Format Error"; setTimeout(() => { text.textContent = "Vibe: Off"; }, 2000);
-          }
-        }, 5000);
-
+        text.textContent = "Syncing...";
         audio.play().then(() => {
-          clearTimeout(loadingTimeout); toggle.classList.add("playing"); lContainer.classList.add("visible");
+          toggle.classList.add("playing"); lContainer.classList.add("visible");
           icon.className = "fa-solid fa-volume-high"; text.textContent = "Vibe: On";
-        }).catch(e => {
-          clearTimeout(loadingTimeout); text.textContent = "Vibe Error"; setTimeout(() => { text.textContent = "Vibe: Off"; }, 2000);
-        });
+        }).catch(e => { text.textContent = "Vibe Error"; setTimeout(() => { text.textContent = "Vibe: Off"; }, 2000); });
       } else {
         audio.pause(); toggle.classList.remove("playing"); lContainer.classList.remove("visible");
         icon.className = "fa-solid fa-volume-xmark"; text.textContent = "Vibe: Off";
@@ -212,7 +179,7 @@
     });
 
     audio.addEventListener("timeupdate", () => {
-      const curT = audio.currentTime + SYNC_OFFSET;
+      const curT = audio.currentTime + VIBE_CONFIG.SYNC_OFFSET;
       if (audio.duration) pBar.style.width = (audio.currentTime / audio.duration * 100) + "%";
 
       let activeIdx = -1;
@@ -228,10 +195,10 @@
           else l.classList.remove("active");
         });
 
-        // Center the active line
-        const lineHeight = 35; // approximate height + gap
-        const offset = activeIdx * lineHeight;
-        lList.style.transform = `translateY(-${offset}px)`;
+        // Frame-perfect centering
+        const lineEl = lines[activeIdx];
+        const scrollOffset = lineEl.offsetTop - 90; // Align to focus area
+        lList.style.transform = `translateY(-${scrollOffset}px)`;
       }
     });
   }
@@ -240,11 +207,11 @@
      INTERACTIONS
      ------------------------------------------------- */
   function initInteractions() {
-    $$(".btn, .nav-logo, .nav-menu-btn").forEach(b => {
+    $$(".btn, .nav-logo, .nav-menu-btn, .music-toggle").forEach(b => {
       b.addEventListener("mousemove", e => {
         const { width: w, height: h, left: l, top: t } = b.getBoundingClientRect();
         const x = e.clientX - l - w / 2, y = e.clientY - t - h / 2;
-        gsap.to(b, { x: x * 0.3, y: y * 0.3, duration: 0.3, ease: "power2.out" });
+        gsap.to(b, { x: x * 0.25, y: y * 0.25, duration: 0.3, ease: "power2.out" });
       });
       b.addEventListener("mouseleave", () => gsap.to(b, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" }));
     });

@@ -179,20 +179,9 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
    BUTTONS
    =================================================== */
 .btn { 
-  font-family: var(--font-mono); 
-  font-size: 1.3rem; 
-  font-weight: 900; 
-  text-transform: uppercase; 
-  padding: 20px 40px; 
-  border: var(--border-w-thick) solid var(--black); 
-  box-shadow: var(--shadow-md); 
-  transition: all 0.2s var(--ease-snap); 
-  background: var(--white); 
-  display: inline-flex; 
-  align-items: center; 
-  gap: 15px;
-  position: relative;
-  overflow: visible;
+  font-family: var(--font-mono); font-size: 1.3rem; font-weight: 900; text-transform: uppercase; padding: 20px 40px; 
+  border: var(--border-w-thick) solid var(--black); box-shadow: var(--shadow-md); transition: all 0.2s var(--ease-snap); 
+  background: var(--white); display: inline-flex; align-items: center; gap: 15px; position: relative; overflow: visible;
 }
 .btn-primary { background: var(--accent-1); color: var(--white); }
 .btn-primary:hover { transform: translate(-8px, -8px); box-shadow: 18px 18px 0 var(--black); background: var(--accent-3); color: var(--black); }
@@ -200,74 +189,76 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
 .btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--black); }
 
 /* ===================================================
-   LYRICS DISPLAY — Advanced Scrolling Wall
+   ADVANCED LYRIC DECK
    =================================================== */
 .lyrics-container {
   position: fixed;
-  bottom: 7.5rem;
+  bottom: 8.5rem;
   left: 2rem;
   z-index: 1999;
-  width: 350px;
-  height: 180px;
+  width: 400px;
+  height: 220px;
   pointer-events: none;
   opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.5s var(--ease-bounce);
+  transform: translateX(-50px);
+  transition: all 0.6s var(--ease-bounce);
 }
 
 .lyrics-container.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateX(0);
 }
 
 .lyrics-window {
   background: var(--white);
-  border: 5px solid var(--black);
+  border: 6px solid var(--black);
   height: 100%;
   overflow: hidden;
-  box-shadow: 10px 10px 0 var(--accent-2);
-  transform: rotate(-1.5deg);
+  box-shadow: 12px 12px 0 var(--black);
   display: flex;
   flex-direction: column;
-  padding: 60px 0; /* Creates the center focus area */
-  mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+  position: relative;
+}
+
+.lyrics-window::before {
+  content: "LIVE_VIBE_FEED";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 2px 10px;
+  z-index: 10;
+  font-weight: 900;
 }
 
 .lyrics-list {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 15px;
-  transition: transform 0.4s var(--ease-snap);
+  padding: 90px 0; /* Center focus */
+  transition: transform 0.5s var(--ease-snap);
 }
 
 .lyric-line {
   font-family: var(--font-mono);
-  font-size: 1rem;
-  font-weight: 800;
+  font-size: 1.1rem;
+  font-weight: 900;
   color: var(--black);
-  opacity: 0.2;
+  opacity: 0.15;
   text-transform: uppercase;
-  text-align: center;
-  padding: 0 20px;
-  transition: all 0.3s;
-  width: 100%;
+  text-align: left;
+  padding: 10px 30px;
+  transition: all 0.4s;
+  line-height: 1.1;
 }
 
 .lyric-line.active {
   opacity: 1;
-  transform: scale(1.1);
-  color: var(--accent-1);
-}
-
-@media (max-width: 768px) {
-  .lyrics-container {
-    width: 280px;
-    height: 150px;
-    bottom: 6.5rem;
-    left: 1.5rem;
-  }
-  .lyric-line { font-size: 0.85rem; }
+  color: var(--black);
+  background: var(--accent-3);
+  transform: scale(1.05) translateX(10px);
+  box-shadow: -10px 0 0 var(--accent-1);
 }
 
 /* ===================================================
@@ -281,10 +272,10 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
   display: flex;
   align-items: center;
   gap: 15px;
-  padding: 12px 24px;
-  background: var(--accent-3);
-  border: 4px solid var(--black);
-  box-shadow: 8px 8px 0 var(--black);
+  padding: 15px 30px;
+  background: var(--white);
+  border: 5px solid var(--black);
+  box-shadow: 10px 10px 0 var(--black);
   cursor: pointer;
   font-family: var(--font-mono);
   font-weight: 900;
@@ -295,37 +286,22 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
 
 .music-toggle:hover {
   transform: translate(-4px, -4px);
-  box-shadow: 12px 12px 0 var(--black);
-  background: var(--accent-2);
-}
-
-.music-toggle:active {
-  transform: translate(2px, 2px);
-  box-shadow: 0 0 0 var(--black);
+  box-shadow: 14px 14px 0 var(--black);
+  background: var(--bg-alt);
 }
 
 .music-progress-bar {
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 6px;
+  height: 8px;
   width: 0%;
   background: var(--accent-1);
-  transition: width 0.1s linear;
+  border-top: 3px solid var(--black);
 }
 
 .music-toggle.playing {
-  background: var(--accent-6);
-}
-
-.music-toggle.playing .music-icon i {
-  animation: musicBeat 0.8s infinite;
-}
-
-@keyframes musicBeat {
-  0% { transform: scale(1); color: var(--black); }
-  50% { transform: scale(1.3); color: var(--accent-1); }
-  100% { transform: scale(1); color: var(--black); }
+  background: var(--accent-2);
 }
 
 /* ===================================================
@@ -348,7 +324,6 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
 }
 .section-title::after { content: ''; position: absolute; left: 0; bottom: -15px; width: 150px; height: 15px; background: var(--accent-3); border: 4px solid var(--black); }
 
-/* ABOUT */
 .about-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: var(--space-5xl); align-items: center; }
 .about-paragraph { font-size: 1.6rem; font-weight: 600; line-height: 1.4; margin-bottom: var(--space-xl); background: var(--white); padding: 25px; border: 4px solid var(--black); box-shadow: var(--shadow-md); }
 .about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
@@ -361,7 +336,6 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
 .about-sticker-1 { top: -25px; right: -25px; transform: rotate(6deg); background: var(--accent-1); color: var(--white); }
 .about-sticker-2 { bottom: -25px; left: -25px; transform: rotate(-6deg); background: var(--accent-6); }
 
-/* TOOLS */
 .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-xl); }
 .tool-category { padding: var(--space-2xl); background: var(--white); border: var(--border-w-thick) solid var(--black); box-shadow: var(--shadow-md); transition: all 0.4s var(--ease-bounce); }
 .tool-category:hover { transform: translate(-12px, -12px); box-shadow: 25px 25px 0 var(--black); background: var(--bg-alt); }
@@ -370,7 +344,6 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
 .tool-tag { padding: 10px 20px; background: var(--white); border: 3px solid var(--black); font-family: var(--font-mono); font-weight: 800; box-shadow: 4px 4px 0 var(--black); transition: all 0.2s; font-size: 1rem; }
 .tool-tag:hover { transform: translate(-3px, -3px); box-shadow: 7px 7px 0 var(--black); background: var(--accent-2); }
 
-/* PROJECTS */
 .projects-list { display: grid; gap: var(--space-5xl); }
 .project-card { display: grid; grid-template-columns: 1fr 1fr; background: var(--white); border: var(--border-w-thick) solid var(--black); box-shadow: var(--shadow-xl); overflow: hidden; }
 .project-card:nth-child(even) { direction: rtl; }
@@ -381,7 +354,6 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
 .project-title { font-size: 3.5rem; font-weight: 900; margin-bottom: var(--space-md); text-transform: uppercase; }
 .project-desc { font-size: 1.4rem; font-weight: 600; line-height: 1.4; margin-bottom: var(--space-lg); }
 
-/* CONTACT */
 .contact-subtitle { 
   font-size: 1.6rem; font-weight: 800; color: var(--black); 
   margin-top: calc(var(--space-2xl) * -1); margin-bottom: var(--space-5xl); 
@@ -401,11 +373,17 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
 .card-pink { transform: rotate(-4deg) translateY(-20px); }
 
 .contact-card:hover { z-index: 10; transform: scale(1.08) rotate(0deg) !important; box-shadow: var(--shadow-xl); }
-.contact-card-icon { font-size: 5rem; margin-bottom: 15px; }
-.contact-card-label { font-size: 1.5rem; border-bottom: 4px solid var(--black); }
-.contact-card-value { font-size: 1.2rem; }
+.card-coral:hover { background: var(--accent-1); color: var(--white); }
+.card-teal:hover { background: var(--accent-2); color: var(--black); }
+.card-violet:hover { background: var(--accent-4); color: var(--white); }
+.card-pink:hover { background: var(--accent-6); color: var(--black); }
 
-/* FOOTER */
+.contact-card-icon { font-size: 5rem; margin-bottom: 15px; transition: transform 0.3s var(--ease-bounce); }
+.contact-card:hover .contact-card-icon { transform: scale(1.2) rotate(10deg); }
+.contact-card-label { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 900; text-transform: uppercase; border-bottom: 4px solid var(--black); margin-bottom: 10px; }
+.contact-card-value { font-family: var(--font-mono); font-size: 1.2rem; font-weight: 700; opacity: 0; transform: translateY(10px); transition: all 0.3s var(--ease-snap); }
+.contact-card:hover .contact-card-value { opacity: 1; transform: translateY(0); }
+
 .footer { background: var(--black); color: var(--white); padding: var(--space-4xl) var(--space-xl); border-top: 10px solid var(--accent-1); margin-top: var(--space-5xl); }
 .footer-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-xl); }
 .footer-copy { font-family: var(--font-mono); font-size: 1.2rem; font-weight: 700; }
@@ -417,32 +395,29 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
    RESPONSIVE
    =================================================== */
 @media (max-width: 1200px) {
-  .hero-grid { grid-template-columns: 1fr 0.8fr; gap: var(--space-2xl); }
+  .hero-grid { grid-template-columns: 1fr 0.8fr; }
   .hero-name { font-size: 8vw; }
 }
 @media (max-width: 1024px) {
-  .hero-grid { grid-template-columns: 1fr; text-align: center; padding-top: var(--space-xl); }
-  .hero-content { display: flex; flex-direction: column; align-items: center; margin-bottom: var(--space-3xl); }
+  .hero-grid { grid-template-columns: 1fr; text-align: center; }
+  .hero-content { display: flex; flex-direction: column; align-items: center; }
   .hero-name { font-size: 10vw; white-space: normal; }
-  .hero-desc { margin-left: auto; margin-right: auto; }
-  .hero-visual { min-height: 350px; display: center; justify-content: center; align-items: center; flex-wrap: wrap; gap: 15px; margin-top: var(--space-xl); }
+  .hero-visual { min-height: 350px; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 15px; margin-top: var(--space-2xl); }
   .hero-card, .hero-arch-sticker, .hero-status-badge { position: relative !important; top: auto !important; right: auto !important; bottom: auto !important; left: auto !important; margin: 0 !important; transform: none !important; }
   .about-grid, .project-card, .contact-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 768px) {
-  :root { --space-5xl: 6rem; --border-w-thick: 5px; }
-  .nav { padding: var(--space-sm); }
   .nav-links { display: none; } .nav-menu-btn { display: flex; }
   .hero-name { font-size: 12vw; } .section-title { font-size: 3rem; }
   .about-stats { grid-template-columns: 1fr; }
   .contact-card { transform: none !important; padding: var(--space-xl); }
   .contact-card-value { opacity: 1; transform: none; }
-  .lyrics-container { bottom: 6.5rem; left: 1.5rem; max-width: 280px; }
-  #lyricText { font-size: 1rem; }
+  .lyrics-container { width: 300px; height: 180px; left: 1rem; bottom: 7.5rem; }
+  .lyric-line { font-size: 0.9rem; }
 }
 @media (max-width: 480px) {
   .hero-name { font-size: 14vw; } .hero-visual { flex-direction: column; } .hero-card { width: 100%; max-width: 280px; }
-  .btn { width: 100%; text-align: center; padding: 12px 24px; font-size: 1.1rem; }
+  .btn { width: 100%; text-align: center; }
 }
 
 /* ===================================================
@@ -452,6 +427,6 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
 .anim-active { opacity: 1 !important; transform: none !important; }
 
 ::selection { background: var(--accent-1); color: var(--white); }
-::-webkit-scrollbar { width: 18px; }
+::-webkit-scrollbar { width: 16px; }
 ::-webkit-scrollbar-track { background: var(--bg); border-left: var(--border-w) solid var(--black); }
-::-webkit-scrollbar-thumb { background: var(--accent-1); border: var(--border-w) solid var(--black); box-shadow: inset 4px 4px 0 rgba(255,255,255,0.2); }
+::-webkit-scrollbar-thumb { background: var(--accent-1); border: var(--border-w) solid var(--black); }
