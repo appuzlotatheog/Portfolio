@@ -8,7 +8,7 @@
 
   // --- SYNC CONFIG (Edit this to nudge the vibe) ---
   const VIBE_CONFIG = {
-    SYNC_OFFSET: -0.2, // Global nudge (negative = earlier, positive = later)
+    SYNC_OFFSET: 0.3, // Global nudge (negative = earlier, positive = later)
     SCROLL_SPEED: 0.5,  // Transition duration for scrolling
     LYRIC_INTERVAL: 2.9, // Default seconds between lines for the fast part
     BRIDGE_INTERVAL: 4.0 // Seconds between lines for the "Ready" part
