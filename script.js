@@ -196,7 +196,7 @@
         });
 
         const lineEl = lines[activeIdx];
-        const scrollOffset = lineEl.offsetTop - 55; // Updated centering for smaller height
+        const scrollOffset = lineEl.offsetTop - 35; // Updated centering for tiny height
         lList.style.transform = `translateY(-${scrollOffset}px)`;
       }
     });

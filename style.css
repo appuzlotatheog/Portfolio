@@ -196,11 +196,11 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
   bottom: 7.5rem;
   left: 2rem;
   z-index: 1999;
-  width: 320px;
-  height: 140px;
+  width: 240px;
+  height: 80px;
   pointer-events: none;
   opacity: 0;
-  transform: translateX(-30px);
+  transform: translateX(-20px);
   transition: all 0.6s var(--ease-bounce);
 }
 
@@ -211,24 +211,24 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
 
 .lyrics-window {
   background: var(--white);
-  border: 5px solid var(--black);
+  border: 4px solid var(--black);
   height: 100%;
   overflow: hidden;
-  box-shadow: 8px 8px 0 var(--black);
+  box-shadow: 6px 6px 0 var(--black);
   display: flex;
   flex-direction: column;
   position: relative;
 }
 
 .lyrics-window::before {
-  content: "LIVE_VIBE";
+  content: "VIBE_SYNC";
   position: absolute;
   top: 0; left: 0; right: 0;
   background: var(--black);
   color: var(--white);
   font-family: var(--font-mono);
-  font-size: 0.65rem;
-  padding: 1px 8px;
+  font-size: 0.55rem;
+  padding: 1px 6px;
   z-index: 10;
   font-weight: 900;
 }
@@ -236,21 +236,21 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
 .lyrics-list {
   display: flex;
   flex-direction: column;
-  padding: 55px 0; /* Centering for smaller height */
+  padding: 35px 0; 
   transition: transform 0.5s var(--ease-snap);
 }
 
 .lyric-line {
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   font-weight: 900;
   color: var(--black);
-  opacity: 0.15;
+  opacity: 0.1;
   text-transform: uppercase;
   text-align: left;
-  padding: 8px 20px;
+  padding: 5px 15px;
   transition: all 0.4s;
-  line-height: 1.1;
+  line-height: 1;
 }
 
 .lyric-line.active {
