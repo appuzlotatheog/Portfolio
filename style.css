@@ -145,16 +145,13 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
    HERO
    =================================================== */
 .hero { min-height: 100vh; display: flex; align-items: center; padding: var(--space-5xl) var(--space-xl) var(--space-3xl); position: relative; }
-.hero-grid { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5xl); align-items: center; width: 100%; }
-
+.hero-grid { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: var(--space-4xl); align-items: center; width: 100%; }
 .hero-greeting { font-family: var(--font-mono); font-size: 1.5rem; background: var(--black); color: var(--white); display: inline-block; padding: 6px 16px; margin-bottom: var(--space-md); transform: rotate(-1.5deg); }
-.hero-name { font-family: var(--font-display); font-size: clamp(4rem, 10vw, 10rem); font-weight: 900; line-height: 0.75; letter-spacing: -0.07em; margin-bottom: var(--space-lg); text-transform: uppercase; white-space: nowrap; }
+.hero-name { font-family: var(--font-display); font-size: clamp(3.5rem, 8vw, 10rem); font-weight: 900; line-height: 0.75; letter-spacing: -0.07em; margin-bottom: var(--space-lg); text-transform: uppercase; white-space: nowrap; }
 .hero-name-accent { color: var(--accent-1); -webkit-text-stroke: 5px var(--black); position: relative; paint-order: stroke fill; }
 .hero-name-accent::before { content: "lota"; position: absolute; top: 12px; left: 12px; color: var(--black); z-index: -1; opacity: 0.3; }
-
 .hero-role-wrapper { display: inline-flex; align-items: center; gap: var(--space-sm); font-family: var(--font-mono); font-size: 1.8rem; font-weight: 800; padding: 12px 24px; background: var(--accent-2); border: var(--border-w) solid var(--black); box-shadow: var(--shadow-md); margin-bottom: var(--space-2xl); transform: rotate(1deg); }
 .hero-desc { font-size: 1.6rem; font-weight: 700; line-height: 1.25; max-width: 600px; margin-bottom: var(--space-3xl); background: var(--white); padding: 20px; border: 4px solid var(--black); box-shadow: var(--shadow-sm); }
-
 .hero-cta-group { display: flex; gap: var(--space-xl); flex-wrap: wrap; }
 
 .hero-visual { position: relative; min-height: 600px; width: 100%; display: flex; align-items: center; justify-content: center; }
@@ -165,7 +162,6 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
 .hero-card:hover { transform: translate(-12px, -12px) rotate(0deg) !important; box-shadow: var(--shadow-xl); background: var(--accent-3); }
 .hero-card-icon { font-size: 4rem; }
 .hero-card-text { font-family: var(--font-mono); font-size: 1.2rem; font-weight: 800; text-transform: uppercase; }
-
 .hero-card-1 { top: 5%; right: 20%; transform: rotate(-8deg); background: var(--accent-4); }
 .hero-card-2 { top: 35%; right: 0%; transform: rotate(6deg); background: var(--accent-6); }
 .hero-card-3 { bottom: 10%; right: 30%; transform: rotate(-4deg); background: var(--accent-2); }
@@ -199,21 +195,103 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
   overflow: visible;
 }
 .btn-primary { background: var(--accent-1); color: var(--white); }
-.btn-primary:hover { 
-  transform: translate(-8px, -8px); 
-  box-shadow: 18px 18px 0 var(--black); 
-  background: var(--accent-3); 
-  color: var(--black); 
+.btn-primary:hover { transform: translate(-8px, -8px); box-shadow: 18px 18px 0 var(--black); background: var(--accent-3); color: var(--black); }
+.btn-outline:hover { background: var(--black); color: var(--white); transform: translate(-8px, -8px); box-shadow: 18px 18px 0 var(--accent-1); }
+.btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--black); }
+
+/* ===================================================
+   LYRICS DISPLAY
+   =================================================== */
+.lyrics-container {
+  position: fixed;
+  bottom: 7.5rem;
+  left: 2rem;
+  z-index: 1999;
+  max-width: 350px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.5s var(--ease-bounce);
 }
-.btn-outline:hover { 
-  background: var(--black); 
-  color: var(--white); 
-  transform: translate(-8px, -8px); 
-  box-shadow: 18px 18px 0 var(--accent-1); 
+
+.lyrics-container.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
-.btn:active {
-  transform: translate(4px, 4px);
+
+.lyrics-box {
+  background: var(--white);
+  border: 5px solid var(--black);
+  padding: 20px 25px;
+  box-shadow: 10px 10px 0 var(--accent-2);
+  transform: rotate(-1.5deg);
+}
+
+#lyricText {
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--black);
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+/* ===================================================
+   MUSIC TOGGLE
+   =================================================== */
+.music-toggle {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 24px;
+  background: var(--accent-3);
+  border: 4px solid var(--black);
+  box-shadow: 8px 8px 0 var(--black);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-weight: 900;
+  text-transform: uppercase;
+  transition: all 0.2s var(--ease-bounce);
+  overflow: hidden;
+}
+
+.music-toggle:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 12px 12px 0 var(--black);
+  background: var(--accent-2);
+}
+
+.music-toggle:active {
+  transform: translate(2px, 2px);
   box-shadow: 0 0 0 var(--black);
+}
+
+.music-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 6px;
+  width: 0%;
+  background: var(--accent-1);
+  transition: width 0.1s linear;
+}
+
+.music-toggle.playing {
+  background: var(--accent-6);
+}
+
+.music-toggle.playing .music-icon i {
+  animation: musicBeat 0.8s infinite;
+}
+
+@keyframes musicBeat {
+  0% { transform: scale(1); color: var(--black); }
+  50% { transform: scale(1.3); color: var(--accent-1); }
+  100% { transform: scale(1); color: var(--black); }
 }
 
 /* ===================================================
@@ -260,7 +338,7 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
 
 /* PROJECTS */
 .projects-list { display: grid; gap: var(--space-5xl); }
-.project-card { display: grid; grid-template-columns: 1.1fr 0.9fr; background: var(--white); border: var(--border-w-thick) solid var(--black); box-shadow: var(--shadow-xl); overflow: hidden; }
+.project-card { display: grid; grid-template-columns: 1fr 1fr; background: var(--white); border: var(--border-w-thick) solid var(--black); box-shadow: var(--shadow-xl); overflow: hidden; }
 .project-card:nth-child(even) { direction: rtl; }
 .project-card:nth-child(even) .project-info { direction: ltr; }
 .project-image-wrapper { position: relative; height: 450px; }
@@ -313,7 +391,7 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
   .hero-content { display: flex; flex-direction: column; align-items: center; margin-bottom: var(--space-3xl); }
   .hero-name { font-size: 10vw; white-space: normal; }
   .hero-desc { margin-left: auto; margin-right: auto; }
-  .hero-visual { min-height: 350px; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 15px; margin-top: var(--space-xl); }
+  .hero-visual { min-height: 350px; display: center; justify-content: center; align-items: center; flex-wrap: wrap; gap: 15px; margin-top: var(--space-xl); }
   .hero-card, .hero-arch-sticker, .hero-status-badge { position: relative !important; top: auto !important; right: auto !important; bottom: auto !important; left: auto !important; margin: 0 !important; transform: none !important; }
   .about-grid, .project-card, .contact-grid { grid-template-columns: 1fr; }
 }
@@ -325,119 +403,12 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
   .about-stats { grid-template-columns: 1fr; }
   .contact-card { transform: none !important; padding: var(--space-xl); }
   .contact-card-value { opacity: 1; transform: none; }
+  .lyrics-container { bottom: 6.5rem; left: 1.5rem; max-width: 280px; }
+  #lyricText { font-size: 1rem; }
 }
 @media (max-width: 480px) {
   .hero-name { font-size: 14vw; } .hero-visual { flex-direction: column; } .hero-card { width: 100%; max-width: 280px; }
   .btn { width: 100%; text-align: center; padding: 12px 24px; font-size: 1.1rem; }
-}
-
-/* ===================================================
-   LYRICS DISPLAY
-   =================================================== */
-.lyrics-container {
-  position: fixed;
-  bottom: 6rem;
-  left: 2rem;
-  z-index: 1999;
-  max-width: 300px;
-  pointer-events: none;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.4s var(--ease-bounce);
-}
-
-.lyrics-container.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.lyrics-box {
-  background: var(--white);
-  border: 4px solid var(--black);
-  padding: 15px 20px;
-  box-shadow: 8px 8px 0 var(--accent-2);
-  transform: rotate(-1deg);
-}
-
-#lyricText {
-  font-family: var(--font-mono);
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: var(--black);
-  line-height: 1.2;
-  text-transform: uppercase;
-}
-
-@media (max-width: 768px) {
-  .lyrics-container {
-    bottom: 5.5rem;
-    left: 1.5rem;
-    max-width: 250px;
-  }
-  #lyricText { font-size: 0.9rem; }
-}
-
-/* ===================================================
-   MUSIC TOGGLE
-   =================================================== */
-.music-toggle {
-  position: fixed;
-  bottom: 2rem;
-  left: 2rem;
-  z-index: 2000;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 20px;
-  background: var(--accent-3);
-  border: 4px solid var(--black);
-  box-shadow: 6px 6px 0 var(--black);
-  cursor: pointer;
-  font-family: var(--font-mono);
-  font-weight: 900;
-  text-transform: uppercase;
-  transition: all 0.2s var(--ease-bounce);
-}
-
-.music-toggle:hover {
-  transform: translate(-4px, -4px);
-  box-shadow: 10px 10px 0 var(--black);
-  background: var(--accent-2);
-}
-
-.music-toggle:active {
-  transform: translate(2px, 2px);
-  box-shadow: 0 0 0 var(--black);
-}
-
-.music-icon {
-  font-size: 1.5rem;
-  width: 30px;
-  display: flex;
-  justify-content: center;
-}
-
-.music-toggle.playing {
-  background: var(--accent-6);
-}
-
-.music-toggle.playing .music-icon i {
-  animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
-}
-
-@media (max-width: 768px) {
-  .music-toggle {
-    bottom: 1.5rem;
-    left: 1.5rem;
-    padding: 8px 16px;
-    font-size: 0.8rem;
-  }
 }
 
 /* ===================================================

@@ -243,6 +243,7 @@
     const text = $(".music-text", toggle);
     const lyricsContainer = $("#lyricsContainer");
     const lyricText = $("#lyricText");
+    const progressBar = $("#musicProgressBar");
 
     if (!audio || !toggle) return;
 
@@ -280,26 +281,14 @@
     toggle.addEventListener("click", () => {
       if (audio.paused) {
         text.textContent = "Loading...";
-        
-        // Safety timeout: If it doesn't play in 5s, it's probably a broken file
-        const loadingTimeout = setTimeout(() => {
-          if (audio.paused && text.textContent === "Loading...") {
-            text.textContent = "Format Error";
-            console.error("Music load timed out. Check if assets/music.mp3 is a valid MP3.");
-            setTimeout(() => { text.textContent = "Vibe: Off"; }, 2000);
-          }
-        }, 5000);
-
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
-            clearTimeout(loadingTimeout);
             toggle.classList.add("playing");
             lyricsContainer.classList.add("visible");
             icon.className = "fa-solid fa-volume-high";
             text.textContent = "Vibe: On";
           }).catch(error => {
-            clearTimeout(loadingTimeout);
             console.error("Audio playback failed:", error);
             text.textContent = "Vibe Error";
             setTimeout(() => { text.textContent = "Vibe: Off"; }, 2000);
@@ -316,20 +305,25 @@
 
     audio.addEventListener("timeupdate", () => {
       const currentTime = audio.currentTime;
+      const duration = audio.duration;
+      
+      // Update progress bar
+      if (duration) {
+        const progress = (currentTime / duration) * 100;
+        progressBar.style.width = progress + "%";
+      }
+
+      // Sync lyrics
       const currentLyric = lyricsData
         .filter(l => l.time <= currentTime)
         .pop();
 
       if (currentLyric && lyricText.textContent !== currentLyric.text) {
-        gsap.to(lyricText, {
-          opacity: 0,
-          y: -10,
-          duration: 0.2,
-          onComplete: () => {
-            lyricText.textContent = currentLyric.text;
-            gsap.to(lyricText, { opacity: 1, y: 0, duration: 0.2 });
-          }
-        });
+        gsap.fromTo(lyricText, 
+          { opacity: 0, y: 10, skewX: 10 }, 
+          { opacity: 1, y: 0, skewX: 0, duration: 0.4, ease: "back.out(1.7)" }
+        );
+        lyricText.textContent = currentLyric.text;
       }
     });
   }
