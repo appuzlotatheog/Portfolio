@@ -128,38 +128,38 @@
   /* -------------------------------------------------
      ADVANCED MUSIC & LYRIC ENGINE
      ------------------------------------------------- */
-  function initMusic() {
+  function parseLRC(lrcText) {
+    const lines = lrcText.split('\n');
+    const result = [];
+    const timeReg = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/;
+    for (let line of lines) {
+      const match = timeReg.exec(line);
+      if (match) {
+        const minutes = parseInt(match[1]);
+        const seconds = parseInt(match[2]);
+        const ms = parseInt(match[3]);
+        const time = minutes * 60 + seconds + (ms / (match[3].length === 3 ? 1000 : 100));
+        const text = line.replace(timeReg, '').trim();
+        if (text) result.push({ time, text });
+      }
+    }
+    return result;
+  }
+
+  async function initMusic() {
     const audio = $("#bgMusic"), toggle = $("#musicToggle"), icon = $("#musicIcon"), text = $(".music-text", toggle), lContainer = $("#lyricsContainer"), lList = $("#lyricsList"), pBar = $("#musicProgressBar");
     if (!audio || !toggle) return;
 
-    const lyricsData = [
-      { time: 0, text: "♪ Let It Happen..." },
-      { time: 23, text: "I cannot vanish, you will not scare me" },
-      { time: 26.1, text: "Try to get through it, try to push through it" },
-      { time: 29.2, text: "You were not thinking that I will not do it" },
-      { time: 32.3, text: "They be lovin' someone and I'm another story" },
-      { time: 35.4, text: "Take the next ticket, get the next train" },
-      { time: 38.5, text: "Why would I do it? Anyone'd think that" },
-      { time: 41.6, text: "I cannot vanish, you will not scare me" },
-      { time: 44.7, text: "Try to get through it, try to push through it" },
-      { time: 47.8, text: "You were not thinking that I will not do it" },
-      { time: 50.9, text: "They be lovin' someone and I'm another story" },
-      { time: 54.0, text: "Take the next ticket, get the next train" },
-      { time: 57.1, text: "Why would I do it? Anyone'd think that" },
-      { time: 60.2, text: "Try to get through it, try to push through it" },
-      { time: 63.3, text: "You were not thinking that I will not do it" },
-      { time: 66.4, text: "They be lovin' someone and I'm another story" },
-      { time: 69.5, text: "Take the next ticket, get the next train" },
-      { time: 72.6, text: "Why would I do it? Anyone'd think that" },
-      { time: 76.0, text: "Baby, now I'm ready, moving on" },
-      { time: 80.2, text: "Oh, but maybe I was ready all along" },
-      { time: 84.4, text: "Oh, I'm ready for the moment and the sound" },
-      { time: 88.6, text: "Oh, but maybe I was ready all along" },
-      { time: 92.8, text: "Baby, now I'm ready, moving on" },
-      { time: 97.0, text: "Oh, but maybe I was ready all along" },
-      { time: 101.2, text: "Oh, I'm ready for the moment and the sound" },
-      { time: 105.4, text: "Oh, but maybe I was ready all along" }
-    ];
+    let lyricsData = [{ time: 0, text: "♪ Loading Vibe..." }];
+
+    try {
+      const resp = await fetch('assets/music.lrc');
+      const lrcContent = await resp.text();
+      const parsed = parseLRC(lrcContent);
+      if (parsed.length > 0) lyricsData = parsed;
+    } catch (err) {
+      console.warn("LRC not found. Using fallback.");
+    }
 
     lList.innerHTML = lyricsData.map((l, i) => `<div class="lyric-line" data-index="${i}">${l.text}</div>`).join('');
 
@@ -179,7 +179,7 @@
     });
 
     audio.addEventListener("timeupdate", () => {
-      const curT = audio.currentTime + VIBE_CONFIG.SYNC_OFFSET;
+      const curT = audio.currentTime + 0.1; // Minimal offset for neutral sync
       if (audio.duration) pBar.style.width = (audio.currentTime / audio.duration * 100) + "%";
 
       let activeIdx = -1;
@@ -189,15 +189,17 @@
       }
 
       if (activeIdx !== -1) {
-        const lines = $$(".lyric-line");
+        const lines = $$(".lyric-line", lList);
         lines.forEach((l, i) => {
           if (i === activeIdx) l.classList.add("active");
           else l.classList.remove("active");
         });
 
         const lineEl = lines[activeIdx];
-        const scrollOffset = lineEl.offsetTop - 35; // Updated centering for tiny height
-        lList.style.transform = `translateY(-${scrollOffset}px)`;
+        if (lineEl) {
+          const scrollOffset = lineEl.offsetTop - 35;
+          lList.style.transform = `translateY(-${scrollOffset}px)`;
+        }
       }
     });
   }
