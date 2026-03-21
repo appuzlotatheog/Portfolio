@@ -200,14 +200,15 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
 .btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--black); }
 
 /* ===================================================
-   LYRICS DISPLAY
+   LYRICS DISPLAY — Advanced Scrolling Wall
    =================================================== */
 .lyrics-container {
   position: fixed;
   bottom: 7.5rem;
   left: 2rem;
   z-index: 1999;
-  max-width: 350px;
+  width: 350px;
+  height: 180px;
   pointer-events: none;
   opacity: 0;
   transform: translateY(30px);
@@ -219,21 +220,54 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
   transform: translateY(0);
 }
 
-.lyrics-box {
+.lyrics-window {
   background: var(--white);
   border: 5px solid var(--black);
-  padding: 20px 25px;
+  height: 100%;
+  overflow: hidden;
   box-shadow: 10px 10px 0 var(--accent-2);
   transform: rotate(-1.5deg);
+  display: flex;
+  flex-direction: column;
+  padding: 60px 0; /* Creates the center focus area */
+  mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
 }
 
-#lyricText {
+.lyrics-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  transition: transform 0.4s var(--ease-snap);
+}
+
+.lyric-line {
   font-family: var(--font-mono);
-  font-size: 1.2rem;
-  font-weight: 900;
+  font-size: 1rem;
+  font-weight: 800;
   color: var(--black);
-  line-height: 1.3;
+  opacity: 0.2;
   text-transform: uppercase;
+  text-align: center;
+  padding: 0 20px;
+  transition: all 0.3s;
+  width: 100%;
+}
+
+.lyric-line.active {
+  opacity: 1;
+  transform: scale(1.1);
+  color: var(--accent-1);
+}
+
+@media (max-width: 768px) {
+  .lyrics-container {
+    width: 280px;
+    height: 150px;
+    bottom: 6.5rem;
+    left: 1.5rem;
+  }
+  .lyric-line { font-size: 0.85rem; }
 }
 
 /* ===================================================
