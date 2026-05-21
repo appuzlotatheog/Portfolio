@@ -101,7 +101,7 @@
       else if (cur > lastS && cur > 200) { nav.classList.remove("visible"); nav.classList.add("nav-hidden"); }
       else { nav.classList.add("visible"); nav.classList.remove("nav-hidden"); }
       lastS = cur;
-    });
+    }, { passive: true });
     if (mBtn && mMenu) {
       mBtn.addEventListener("click", () => {
         isOpen = mBtn.classList.toggle("open"); mMenu.classList.toggle("open");
