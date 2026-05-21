@@ -399,25 +399,30 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
   .hero-name { font-size: 8vw; }
 }
 @media (max-width: 1024px) {
-  .hero-grid { grid-template-columns: 1fr; text-align: center; }
+  .hero-grid { grid-template-columns: 1fr; text-align: center; gap: var(--space-2xl); }
   .hero-content { display: flex; flex-direction: column; align-items: center; }
   .hero-name { font-size: 10vw; white-space: normal; }
-  .hero-visual { min-height: 350px; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 15px; margin-top: var(--space-2xl); }
+  .hero-visual { min-height: auto; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: var(--space-md); margin-top: var(--space-2xl); }
   .hero-card, .hero-arch-sticker, .hero-status-badge { position: relative !important; top: auto !important; right: auto !important; bottom: auto !important; left: auto !important; margin: 0 !important; transform: none !important; }
-  .about-grid, .project-card, .contact-grid { grid-template-columns: 1fr; }
+  .about-grid { grid-template-columns: 1fr; gap: var(--space-2xl); }
+  .project-card { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
 }
 @media (max-width: 768px) {
   .nav-links { display: none; } .nav-menu-btn { display: flex; }
   .hero-name { font-size: 12vw; } .section-title { font-size: 3rem; }
-  .about-stats { grid-template-columns: 1fr; }
+  .about-stats { grid-template-columns: 1fr; gap: var(--space-md); }
+  .tools-grid { grid-template-columns: 1fr; }
   .contact-card { transform: none !important; padding: var(--space-xl); }
   .contact-card-value { opacity: 1; transform: none; }
   .lyrics-container { width: 300px; height: 180px; left: 1rem; bottom: 7.5rem; }
   .lyric-line { font-size: 0.9rem; }
+  .section { padding: var(--space-3xl) var(--space-lg); }
 }
 @media (max-width: 480px) {
   .hero-name { font-size: 14vw; } .hero-visual { flex-direction: column; } .hero-card { width: 100%; max-width: 280px; }
-  .btn { width: 100%; text-align: center; }
+  .btn { width: 100%; text-align: center; padding: 12px 20px; font-size: 1.1rem; }
+  .page-title { font-size: 2rem; }
 }
 
 /* ===================================================
