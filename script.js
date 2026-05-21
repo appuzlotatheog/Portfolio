@@ -1,6 +1,6 @@
 /* ===================================================
    APPUZLOTA PORTFOLIO — Script
-   Pure JS + GSAP + ScrollTrigger
+   Pure JS + Dynamic GSAP + ScrollTrigger
    =================================================== */
 
 (function () {
@@ -17,9 +17,25 @@
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
-  if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const s = document.createElement("script");
+      s.src = src;
+      s.async = true;
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
   }
+
+  const gsapPromise = Promise.all([
+    loadScript("https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"),
+    loadScript("https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js")
+  ]).then(() => {
+    if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+  });
 
   /* -------------------------------------------------
      LOADER
@@ -33,11 +49,23 @@
       bar.style.width = progress + "%";
       if (progress >= 100) {
         clearInterval(interval);
-        setTimeout(() => {
-          gsap.to(loader, { yPercent: -100, duration: 0.8, ease: "power4.inOut", onComplete: () => {
-            loader.style.display = "none"; animateHeroEntrance(); nav.classList.add("visible");
-          }});
-        }, 400);
+        gsapPromise.then(() => {
+          setTimeout(() => {
+            gsap.to(loader, { yPercent: -100, duration: 0.8, ease: "power4.inOut", onComplete: () => {
+              loader.style.display = "none"; animateHeroEntrance(); nav.classList.add("visible");
+            }});
+          }, 400);
+        }).catch(() => {
+          setTimeout(() => {
+            loader.style.transition = "transform 0.8s cubic-bezier(0.77, 0, 0.175, 1)";
+            loader.style.transform = "translateY(-100%)";
+            setTimeout(() => {
+              loader.style.display = "none";
+              nav.classList.add("visible");
+              startTyping();
+            }, 800);
+          }, 400);
+        });
       }
     }, 80);
   }
@@ -108,7 +136,9 @@
         document.body.style.overflow = isOpen ? "hidden" : "";
         if (isOpen) {
           nav.classList.add("visible"); nav.classList.remove("nav-hidden");
-          gsap.from(".mobile-link", { y: 50, opacity: 0, stagger: 0.1, duration: 0.5, ease: "back.out(1.7)", delay: 0.2 });
+          if (typeof gsap !== "undefined") {
+            gsap.from(".mobile-link", { y: 50, opacity: 0, stagger: 0.1, duration: 0.5, ease: "back.out(1.7)", delay: 0.2 });
+          }
         }
       });
     }
@@ -233,7 +263,18 @@
     });
   }
 
-  function init() { initLoader(); initNav(); initScrollAnimations(); initInteractions(); initMusic(); }
+  function init() {
+    initLoader();
+    initNav();
+    initMusic();
+
+    gsapPromise.then(() => {
+      initScrollAnimations();
+      initInteractions();
+    }).catch(err => {
+      console.warn("GSAP failed to load. Skipping GSAP animations.", err);
+    });
+  }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
 })();
