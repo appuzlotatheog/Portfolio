@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How I Use AI to Build Full-Stack Apps 10x Faster | Appuzlota</title>
+  <meta name="description" content="Tired of generic coding advice? Here's my real, unfiltered workflow for shipping production-ready applications at lightning speed using AI tools.">
+  <link rel="canonical" href="https://appuzlota.me/blog/ai-assisted-coding.html">
+  <meta name="author" content="Appuzlota">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#FF5C5C">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://appuzlota.me/blog/ai-assisted-coding.html">
+  <meta property="og:title" content="How I Use AI to Build Full-Stack Apps 10x Faster | Appuzlota">
+  <meta property="og:description" content="Tired of generic coding advice? Here's my real, unfiltered workflow for shipping production-ready applications at lightning speed using AI tools.">
+  <meta property="og:image" content="https://appuzlota.me/assets/og-image.png">
+  <meta property="og:site_name" content="Appuzlota">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@appuzlota">
+  <meta name="twitter:title" content="How I Use AI to Build Full-Stack Apps 10x Faster | Appuzlota">
+  <meta name="twitter:description" content="Tired of generic coding advice? Here's my real, unfiltered workflow for shipping production-ready applications at lightning speed using AI tools.">
+  <meta name="twitter:image" content="https://appuzlota.me/assets/og-image.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-JFD0NGPQJL"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-JFD0NGPQJL');</script>
+</head>
+<body>
+  <nav class="nav visible" id="nav">
+    <a href="/" class="nav-logo"><span>appuz</span>lota</a>
+    <div class="nav-links">
+      <a href="/#about" class="nav-link">About</a>
+      <a href="/#tools" class="nav-link">Tools</a>
+      <a href="/#work" class="nav-link">Work</a>
+      <a href="/blog/" class="nav-link">Blog</a>
+      <a href="/#contact" class="nav-link">Contact</a>
+    </div>
+    <button class="nav-menu-btn" id="menuBtn" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <nav class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile navigation">
+    <a href="/#about" class="mobile-link">01 — About</a>
+    <a href="/#tools" class="mobile-link">02 — Tools</a>
+    <a href="/#work" class="mobile-link">03 — Work</a>
+    <a href="/blog/" class="mobile-link">04 — Blog</a>
+    <a href="/#contact" class="mobile-link">05 — Contact</a>
+  </nav>
+  <main class="page-content">
+    <div class="page-container" style="max-width: 800px;">
+      <a href="/blog/" class="page-back-link"><i class="fa-solid fa-arrow-left"></i> Back to Blog</a>
+      <h1 class="page-title">How I Use AI to Build Full-Stack Apps 10x Faster</h1>
+      <div class="page-meta" style="font-family: 'Space Mono', monospace; font-size: 0.9rem; color: #555; margin-bottom: 2rem;">May 15, 2026 • 5 min read</div>
+      
+      <div class="page-body" style="font-family: 'Inter', sans-serif; line-height: 1.8; color: #222; font-size: 1.125rem;">
+        <p>Let's cut the bullshit. Everyone is talking about how AI is going to replace developers, but if you're actually shipping code in the real world, you know that's not happening anytime soon. Instead, AI is the ultimate multiplier. If you're a 1x dev, it might make you a 2x dev. But if you already know what you're doing? It makes you a 10x beast.</p>
+        
+        <p>Over the last six months, I've completely overhauled my workflow. I went from spending hours writing boilerplate, setting up basic schemas, and debugging stupid typo-induced errors to focusing almost entirely on architecture, business logic, and actual problem-solving. Here is my unfiltered, opinionated process for using AI to ship full-stack apps at lightning speed.</p>
+        
+        <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 2rem; margin-top: 3rem; margin-bottom: 1rem;">1. The Ideation & Schema Phase</h2>
+        <p>When I start a new project, I don't touch code. I don't open VS Code. I don't run <code>npx create-next-app</code>. I open Claude or ChatGPT and have a conversation. I describe the app, the core features, and the target audience. Then, I ask the AI to generate a detailed database schema and API route structure.</p>
+        <p>Why? Because LLMs are incredibly good at pattern matching. If I say "build a SaaS for pet groomers," it immediately knows I need tables for Users, Pets, Appointments, Services, and Invoices. It spits out a Prisma schema in seconds. I review it, tweak the relationships, add a few missing fields, and boom—I just saved three hours of whiteboard planning.</p>
+        
+        <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 2rem; margin-top: 3rem; margin-bottom: 1rem;">2. Boilerplate Generation</h2>
+        <p>Writing authentication boilerplate is a sin in 2026. Setting up Tailwind, configuring ESLint, and writing the same login/signup components is a waste of human intelligence. This is where tools like Cursor shine. I use Cursor's Composer or Claude Code to scaffold the entire foundation.</p>
+        <blockquote style="border-left: 5px solid #111; padding-left: 1.5rem; margin: 2rem 0; font-style: italic; background: #f9f9f9; padding: 1.5rem;">
+          "The goal is not to have AI write perfect code. The goal is to have AI write the boring code so you can focus on the interesting code."
+        </blockquote>
+        <p>I give it a prompt like: <em>"Set up a Next.js 15 app with App Router, Tailwind CSS, NextAuth for Google and Github login, and a basic neo-brutalist UI layout."</em> Within minutes, the foundation is laid. It's not always perfect, but it gives me a massive head start.</p>
+        
+        <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 2rem; margin-top: 3rem; margin-bottom: 1rem;">3. Vibe Coding the UI</h2>
+        <p>This is my favorite part. I am not a UI designer, but I know what looks good. With AI, I practice what people are calling "vibe coding." I don't painstakingly write CSS grid properties; I tell the AI what vibe I want. "Make this look like a neo-brutalist dashboard. Thick borders, stark white backgrounds, bright accent colors, and sharp shadows."</p>
+        <p>When the AI generates the UI components, I iterate fast. If it's ugly, I tell it it's ugly. "Too much padding. The button looks generic. Make it pop." It's like having a junior designer sitting next to you who never gets offended and types at 1,000 WPM.</p>
+        
+        <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 2rem; margin-top: 3rem; margin-bottom: 1rem;">4. Complex Logic & Debugging</h2>
+        <p>This is where the real skill comes in. AI is great at boilerplate, but it can hallucinate wildly when dealing with complex, multi-step business logic or deeply nested asynchronous operations. Here is my rule: <strong>Never let the AI write logic you don't understand.</strong></p>
+        <p>Instead of saying "write the payment processing logic," I break it down. I ask it to write the webhook handler. Then I ask it to write the subscription status update function. I stitch them together. When an error inevitably pops up, I don't even read the stack trace anymore. I just paste it into the AI, and 95% of the time, it points out the exact missing await statement or undefined variable.</p>
+
+        <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 2rem; margin-top: 3rem; margin-bottom: 1rem;">5. The Final Polish</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <p>Maecenas sed enim ut sem viverra aliquet eget sit amet. Vitae justo eget magna fermentum iaculis eu non diam. Posuere ac ut consequat semper viverra. Tincidunt augue interdum velit euismod in pellentesque massa. Scelerisque in dictum non consectetur a erat nam at. Commodo sed egestas egestas fringilla phasellus faucibus scelerisque eleifend donec. Faucibus nisl tincidunt eget nullam non nisi est sit amet.</p>
+        
+        <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 2rem; margin-top: 3rem; margin-bottom: 1rem;">The Takeaway</h2>
+        <p>If you're resisting AI coding tools because you think it makes you a "fake developer," you're going to get left behind. The job of a developer isn't to type characters on a keyboard; it's to solve problems and deliver value. AI just lets you do that ten times faster. Embrace the tools, refine your prompting, and start shipping.</p>
+      </div>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="footer-inner">
+      <p class="footer-copy">&copy; 2026 appuzlota | Built with AI, fueled by caffeine.</p>
+      <div class="footer-links">
+        <a href="https://github.com/appuzlotatheog" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://twitter.com/appuzlota" target="_blank" rel="noopener">Twitter / X</a>
+        <a href="https://linkedin.com/in/appuzlota" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+  <script>
+    const menuBtn=document.getElementById('menuBtn'),mobileMenu=document.getElementById('mobileMenu');
+    if(menuBtn&&mobileMenu){menuBtn.addEventListener('click',()=>{menuBtn.classList.toggle('open');mobileMenu.classList.toggle('open');document.body.style.overflow=mobileMenu.classList.contains('open')?'hidden':'';});}
+    document.querySelectorAll('#mobileMenu a').forEach(l=>l.addEventListener('click',()=>{menuBtn.classList.remove('open');mobileMenu.classList.remove('open');document.body.style.overflow='';}));
+  </script>
+  <!-- BlogPosting Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "How I Use AI to Build Full-Stack Apps 10x Faster",
+    "image": "https://appuzlota.me/assets/og-image.png",
+    "author": {
+      "@type": "Person",
+      "name": "Appuzlota"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Appuzlota",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://appuzlota.me/assets/favicon-32x32.png"
+      }
+    },
+    "datePublished": "2026-05-15",
+    "description": "Tired of generic coding advice? Here's my real, unfiltered workflow for shipping production-ready applications at lightning speed using AI tools."
+  }
+  </script>
+</body>
+</html>

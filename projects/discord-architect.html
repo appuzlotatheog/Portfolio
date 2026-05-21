@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discord Architect | Appuzlota Work</title>
+  <meta name="description" content="Discord Architect is a visual builder for complex Discord bots, simplifying architecture into drag-and-drop nodes.">
+  <link rel="canonical" href="https://appuzlota.me/projects/discord-architect.html">
+  <meta name="author" content="Appuzlota">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#FF5C5C">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://appuzlota.me/projects/discord-architect.html">
+  <meta property="og:title" content="Discord Architect | Appuzlota Work">
+  <meta property="og:description" content="Discord Architect is a visual builder for complex Discord bots, simplifying architecture into drag-and-drop nodes.">
+  <meta property="og:image" content="https://appuzlota.me/assets/discord-architect.png">
+  <meta property="og:site_name" content="Appuzlota">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@appuzlota">
+  <meta name="twitter:title" content="Discord Architect | Appuzlota Work">
+  <meta name="twitter:description" content="Discord Architect is a visual builder for complex Discord bots, simplifying architecture into drag-and-drop nodes.">
+  <meta name="twitter:image" content="https://appuzlota.me/assets/discord-architect.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-JFD0NGPQJL"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-JFD0NGPQJL');</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Discord Architect",
+    "operatingSystem": "Web",
+    "applicationCategory": "DeveloperApplication",
+    "description": "Visual builder for complex Discord bot architectures.",
+    "author": {
+      "@type": "Person",
+      "name": "Appuzlota"
+    }
+  }
+  </script>
+</head>
+<body>
+  <nav class="nav visible" id="nav">
+    <a href="/" class="nav-logo"><span>appuz</span>lota</a>
+    <div class="nav-links">
+      <a href="/#about" class="nav-link">About</a>
+      <a href="/#tools" class="nav-link">Tools</a>
+      <a href="/#work" class="nav-link">Work</a>
+      <a href="/blog/" class="nav-link">Blog</a>
+      <a href="/#contact" class="nav-link">Contact</a>
+    </div>
+    <button class="nav-menu-btn" id="menuBtn" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <nav class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile navigation">
+    <a href="/#about" class="mobile-link">01 — About</a>
+    <a href="/#tools" class="mobile-link">02 — Tools</a>
+    <a href="/#work" class="mobile-link">03 — Work</a>
+    <a href="/blog/" class="mobile-link">04 — Blog</a>
+    <a href="/#contact" class="mobile-link">05 — Contact</a>
+  </nav>
+
+  <main class="page-content">
+    <div class="page-container">
+      <a href="/#work" class="page-back-link"><i class="fa-solid fa-arrow-left"></i> Back to Work</a>
+      <h1 class="page-title">Discord Architect</h1>
+      
+      <div class="project-detail-hero">
+        <img src="/assets/discord-architect.png" alt="Discord Architect Interface" style="width: 100%; border: 3px solid #000; box-shadow: 4px 4px 0 #000; margin-bottom: 2rem;">
+      </div>
+
+      <div class="page-body">
+        <p class="lead">Writing boilerplate for Discord bots is a chore. Discord Architect is a node-based visual editor that lets you drag, drop, and compile fully functional Discord bots in minutes, not hours.</p>
+        
+        <h2>The Vision</h2>
+        <p>Discord has essentially become the terminal of the 2020s community internet. But writing the same `client.on('message')` boilerplate every time you want to build a simple automation or utility is agonizing. Discord Architect abstracts away the repetitive plumbing, giving developers a visual canvas to map out commands, events, and API interactions seamlessly.</p>
+
+        <h2>Core Features</h2>
+        <div class="project-detail-features">
+          <div class="feature-item">
+            <h3>Node-Based Logic</h3>
+            <p>Wire events, conditionals, and API calls using a fluid, highly-performant canvas interface.</p>
+          </div>
+          <div class="feature-item">
+            <h3>Instant Compilation</h3>
+            <p>Export your visual graph straight into a clean, idiomatic Node.js project or deploy to the cloud directly.</p>
+          </div>
+          <div class="feature-item">
+            <h3>Built-in Integrations</h3>
+            <p>Native node blocks for connecting to databases, third-party APIs, and webhooks without writing fetch wrappers.</p>
+          </div>
+          <div class="feature-item">
+            <h3>State Management</h3>
+            <p>Easily manage cross-server state and user sessions directly from visual store nodes.</p>
+          </div>
+        </div>
+
+        <h2>Tech Stack Breakdown</h2>
+        <ul>
+          <li><strong>Frontend Canvas:</strong> Reactflow for the node-based UI, heavily customized for complex graph algorithms.</li>
+          <li><strong>Application Shell:</strong> Next.js App Router for optimal rendering and SEO of the dashboard side.</li>
+          <li><strong>Compilation Engine:</strong> Custom AST generator that parses the visual graph JSON into executable TypeScript code.</li>
+          <li><strong>Backend:</strong> Serverless Edge functions for quick execution and API handling.</li>
+        </ul>
+
+        <h2>Impact</h2>
+        <p>By drastically reducing the barrier to entry for robust bot architecture, Discord Architect allows community managers and developers to rapidly prototype bots that actually scale, rather than collapsing under the weight of spaghetti code.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p class="footer-copy">&copy; 2026 appuzlota | Built with AI, fueled by caffeine.</p>
+      <div class="footer-links">
+        <a href="https://github.com/appuzlotatheog" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://twitter.com/appuzlota" target="_blank" rel="noopener">Twitter / X</a>
+        <a href="https://linkedin.com/in/appuzlota" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const menuBtn=document.getElementById('menuBtn'),mobileMenu=document.getElementById('mobileMenu');
+    if(menuBtn&&mobileMenu){menuBtn.addEventListener('click',()=>{menuBtn.classList.toggle('open');mobileMenu.classList.toggle('open');document.body.style.overflow=mobileMenu.classList.contains('open')?'hidden':'';});}
+    document.querySelectorAll('#mobileMenu a').forEach(l=>l.addEventListener('click',()=>{menuBtn.classList.remove('open');mobileMenu.classList.remove('open');document.body.style.overflow='';}));
+  </script>
+</body>
+</html>

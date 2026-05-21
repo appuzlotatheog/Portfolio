@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HyprDash | Appuzlota Work</title>
+  <meta name="description" content="HyprDash is a hyper-fast, customizable dashboard for power users. Built to eliminate friction and speed up workflows.">
+  <link rel="canonical" href="https://appuzlota.me/projects/hyprdash.html">
+  <meta name="author" content="Appuzlota">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#FF5C5C">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://appuzlota.me/projects/hyprdash.html">
+  <meta property="og:title" content="HyprDash | Appuzlota Work">
+  <meta property="og:description" content="HyprDash is a hyper-fast, customizable dashboard for power users. Built to eliminate friction and speed up workflows.">
+  <meta property="og:image" content="https://appuzlota.me/assets/hyprdash.png">
+  <meta property="og:site_name" content="Appuzlota">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@appuzlota">
+  <meta name="twitter:title" content="HyprDash | Appuzlota Work">
+  <meta name="twitter:description" content="HyprDash is a hyper-fast, customizable dashboard for power users. Built to eliminate friction and speed up workflows.">
+  <meta name="twitter:image" content="https://appuzlota.me/assets/hyprdash.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-JFD0NGPQJL"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-JFD0NGPQJL');</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "HyprDash",
+    "operatingSystem": "Web",
+    "applicationCategory": "Productivity",
+    "description": "A hyper-fast, customizable dashboard for power users.",
+    "author": {
+      "@type": "Person",
+      "name": "Appuzlota"
+    }
+  }
+  </script>
+</head>
+<body>
+  <nav class="nav visible" id="nav">
+    <a href="/" class="nav-logo"><span>appuz</span>lota</a>
+    <div class="nav-links">
+      <a href="/#about" class="nav-link">About</a>
+      <a href="/#tools" class="nav-link">Tools</a>
+      <a href="/#work" class="nav-link">Work</a>
+      <a href="/blog/" class="nav-link">Blog</a>
+      <a href="/#contact" class="nav-link">Contact</a>
+    </div>
+    <button class="nav-menu-btn" id="menuBtn" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <nav class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile navigation">
+    <a href="/#about" class="mobile-link">01 — About</a>
+    <a href="/#tools" class="mobile-link">02 — Tools</a>
+    <a href="/#work" class="mobile-link">03 — Work</a>
+    <a href="/blog/" class="mobile-link">04 — Blog</a>
+    <a href="/#contact" class="mobile-link">05 — Contact</a>
+  </nav>
+
+  <main class="page-content">
+    <div class="page-container">
+      <a href="/#work" class="page-back-link"><i class="fa-solid fa-arrow-left"></i> Back to Work</a>
+      <h1 class="page-title">HyprDash</h1>
+      
+      <div class="project-detail-hero">
+        <img src="/assets/hyprdash.png" alt="HyprDash Interface" style="width: 100%; border: 3px solid #000; box-shadow: 4px 4px 0 #000; margin-bottom: 2rem;">
+      </div>
+
+      <div class="page-body">
+        <p class="lead">Dashboard bloat is a disease. HyprDash is the cure. Built strictly for speed demons who refuse to wait for a spinner to tell them what they need to know right now.</p>
+        
+        <h2>The Problem with Modern Dashboards</h2>
+        <p>I got sick of logging into analytics platforms that took 10 seconds just to render the primary widgets. We have gigabit fiber and M-series chips, yet web apps feel slower than ever. I decided it was time to strip away the fat and build a dashboard that respects my time. Enter HyprDash.</p>
+
+        <h2>Core Features</h2>
+        <div class="project-detail-features">
+          <div class="feature-item">
+            <h3>Sub-50ms Rendering</h3>
+            <p>Heavily optimized DOM manipulation and minimal repaints ensure the UI snaps instantly.</p>
+          </div>
+          <div class="feature-item">
+            <h3>Keyboard First</h3>
+            <p>Put the mouse away. Full command-palette integration lets you jump to any metric with two keystrokes.</p>
+          </div>
+          <div class="feature-item">
+            <h3>Plugin Architecture</h3>
+            <p>Easily write your own data connectors using simple JSON schemas and WebSockets.</p>
+          </div>
+          <div class="feature-item">
+            <h3>Neo-brutalist Aesthetic</h3>
+            <p>No gradients, no soft shadows. Just raw data presented clearly with high contrast and stark lines.</p>
+          </div>
+        </div>
+
+        <h2>Tech Stack Breakdown</h2>
+        <ul>
+          <li><strong>Frontend:</strong> React + Vite, leaning heavily into custom Zustand stores to prevent unnecessary prop drilling and bloated context providers.</li>
+          <li><strong>Styling:</strong> Plain CSS modules paired with global CSS variables for a strict, unbreakable design system.</li>
+          <li><strong>Backend:</strong> Node.js with Fastify for extreme HTTP throughput.</li>
+          <li><strong>Real-time:</strong> Socket.io for immediate data pushing. Server-sent events as a fallback.</li>
+          <li><strong>Database:</strong> Redis for caching hot metrics, PostgreSQL for persistent storage and complex queries.</li>
+        </ul>
+
+        <h2>Looking Forward</h2>
+        <p>The goal is to open-source the core engine and allow the community to build integrations for everything from GitHub PRs to Stripe revenue alerts. Bloat is dead. Long live speed.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p class="footer-copy">&copy; 2026 appuzlota | Built with AI, fueled by caffeine.</p>
+      <div class="footer-links">
+        <a href="https://github.com/appuzlotatheog" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://twitter.com/appuzlota" target="_blank" rel="noopener">Twitter / X</a>
+        <a href="https://linkedin.com/in/appuzlota" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const menuBtn=document.getElementById('menuBtn'),mobileMenu=document.getElementById('mobileMenu');
+    if(menuBtn&&mobileMenu){menuBtn.addEventListener('click',()=>{menuBtn.classList.toggle('open');mobileMenu.classList.toggle('open');document.body.style.overflow=mobileMenu.classList.contains('open')?'hidden':'';});}
+    document.querySelectorAll('#mobileMenu a').forEach(l=>l.addEventListener('click',()=>{menuBtn.classList.remove('open');mobileMenu.classList.remove('open');document.body.style.overflow='';}));
+  </script>
+</body>
+</html>
