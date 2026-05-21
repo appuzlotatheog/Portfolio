@@ -1,0 +1,50 @@
+# Appuzlota Portfolio
+
+This project is a personal developer portfolio for Appuzlota, an AI prompt engineer and full-stack developer. The site showcases projects, technical skills, a blog, and a `/uses` page. It is built as a static site using pure HTML, CSS, and JavaScript with a distinct neo-brutalist aesthetic. There is no build step or framework involved, ensuring maximum performance and straightforward deployment to GitHub Pages.
+
+## Core Files
+
+- [index.html](index.html): The main landing page featuring the hero section, about, tools arsenal, and featured projects list.
+- [style.css](style.css): The central stylesheet containing all neo-brutalist design tokens, CSS variables, typography rules, and responsive styling used across the entire site.
+- [script.js](script.js): Contains JavaScript logic for GSAP animations, scroll triggers, and interactive elements (like the music player lyrics parser).
+- [robots.txt](robots.txt): Search engine crawler instructions.
+- [sitemap.xml](sitemap.xml): XML sitemap mapping all URLs on the site for SEO indexing.
+- [favicon.ico](favicon.ico): The multi-resolution fallback favicon for web browsers and crawlers.
+
+## /blog
+
+Contains the blog architecture and published articles.
+- [blog/index.html](blog/index.html): The main blog listing page showcasing all available posts.
+- [blog/ai-assisted-coding.html](blog/ai-assisted-coding.html): Blog post detailing how AI accelerates full-stack development.
+- [blog/ai-coding-tools-compared.html](blog/ai-coding-tools-compared.html): An opinionated comparison of modern AI coding assistants.
+- [blog/what-is-vibe-coding.html](blog/what-is-vibe-coding.html): A thought-leadership piece explaining the "vibe coding" developer movement.
+
+## /projects
+
+Contains standalone pages with deep-dives into featured projects.
+- [projects/hyprdash.html](projects/hyprdash.html): Detailed feature list and tech stack breakdown for the HyprDash project.
+- [projects/discord-architect.html](projects/discord-architect.html): Detailed breakdown for the Discord Architect AI bot project.
+- [projects/solva-space.html](projects/solva-space.html): Detailed breakdown for the Solva.Space e-commerce platform project.
+
+## /uses
+
+- [uses/index.html](uses/index.html): Outlines the developer hardware (Arch Linux, Ryzen) and software stack used by the author.
+
+## /assets
+
+Directory containing all static media assets. Includes high-resolution PNGs for Open Graph sharing, project screenshots, the workspace photograph, favicons, and the background music/lyric files.
+
+## Dependencies & Setup
+
+**Setup Instructions:**
+This is a purely static website. There is no `package.json`, build process, or virtual environment required. 
+To view or work on the project locally, serve the root directory using any local web server. For example:
+- Python: `python3 -m http.server 8000`
+- Node.js: `npx serve .`
+
+**Dependencies:**
+All external libraries are loaded via CDN in the HTML `<head>` or before the closing `</body>` tag:
+- **GSAP (GreenSock)** & **ScrollTrigger**: Used for scroll-based animations and element reveals.
+- **Font Awesome (6.5.1)**: Used for iconography throughout the site.
+- **Google Fonts**: Uses *Space Grotesk*, *Space Mono*, and *Inter*.
+- **Google Analytics (GA4)**: Included for traffic measurement.
