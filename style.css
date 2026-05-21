@@ -140,10 +140,11 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
   position: fixed; inset: 0; background: var(--accent-1); z-index: 1050;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-xl);
   clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); transition: clip-path 0.6s var(--ease-snap);
+  will-change: clip-path, transform; transform: translateZ(0);
 }
 .mobile-menu.open { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-.mobile-link { font-family: var(--font-display); font-size: 3.5rem; font-weight: 900; color: var(--black); -webkit-text-stroke: 2px var(--white); text-transform: uppercase; transition: all 0.3s var(--ease-bounce); }
-.mobile-link:hover { transform: scale(1.1) skew(-5deg); color: var(--white); -webkit-text-stroke: 2px var(--black); }
+.mobile-link { font-family: var(--font-display); font-size: 3.5rem; font-weight: 900; color: var(--black); -webkit-text-stroke: 2px var(--white); text-transform: uppercase; transition: all 0.3s var(--ease-bounce); transform: translateZ(0); }
+.mobile-link:hover { transform: scale(1.1) skew(-5deg) translateZ(0); color: var(--white); -webkit-text-stroke: 2px var(--black); }
 
 /* ===================================================
    HERO
@@ -424,6 +425,8 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
   .lyrics-container { width: 300px; height: 180px; left: 1rem; bottom: 7.5rem; }
   .lyric-line { font-size: 0.9rem; }
   .section { padding: var(--space-3xl) var(--space-lg); }
+  .mobile-menu { gap: var(--space-lg); padding: var(--space-2xl) var(--space-md); }
+  .mobile-link { font-size: 2.2rem; -webkit-text-stroke: 1.5px var(--white); }
 }
 @media (max-width: 480px) {
   .hero-name { font-size: 14vw; } .hero-visual { flex-direction: column; } .hero-card { width: 100%; max-width: 280px; }

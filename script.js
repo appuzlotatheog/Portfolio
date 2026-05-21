@@ -114,7 +114,10 @@
         if (isOpen) {
           nav.classList.add("visible"); nav.classList.remove("nav-hidden");
           if (typeof gsap !== "undefined") {
-            gsap.from(".mobile-link", { y: 50, opacity: 0, stagger: 0.1, duration: 0.5, ease: "back.out(1.7)", delay: 0.2 });
+            gsap.fromTo(".mobile-link", 
+              { y: 50, opacity: 0 }, 
+              { y: 0, opacity: 1, stagger: 0.1, duration: 0.5, ease: "back.out(1.7)", delay: 0.2, clearProps: "all" }
+            );
           }
         }
       });
