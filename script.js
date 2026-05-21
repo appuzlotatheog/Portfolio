@@ -17,25 +17,9 @@
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
-  function loadScript(src) {
-    return new Promise((resolve, reject) => {
-      const s = document.createElement("script");
-      s.src = src;
-      s.async = true;
-      s.onload = resolve;
-      s.onerror = reject;
-      document.head.appendChild(s);
-    });
+  if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
   }
-
-  const gsapPromise = Promise.all([
-    loadScript("https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"),
-    loadScript("https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js")
-  ]).then(() => {
-    if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
-      gsap.registerPlugin(ScrollTrigger);
-    }
-  });
 
   /* -------------------------------------------------
      LOADER
@@ -44,30 +28,23 @@
     const loader = $("#loader"), bar = $("#loaderBar"), nav = $("#nav");
     let progress = 0;
     const interval = setInterval(() => {
-      progress += Math.random() * 30 + 5;
+      progress += Math.random() * 40 + 15;
       if (progress > 100) progress = 100;
       bar.style.width = progress + "%";
       if (progress >= 100) {
         clearInterval(interval);
-        gsapPromise.then(() => {
-          setTimeout(() => {
-            gsap.to(loader, { yPercent: -100, duration: 0.8, ease: "power4.inOut", onComplete: () => {
-              loader.style.display = "none"; animateHeroEntrance(); nav.classList.add("visible");
-            }});
-          }, 400);
-        }).catch(() => {
-          setTimeout(() => {
-            loader.style.transition = "transform 0.8s cubic-bezier(0.77, 0, 0.175, 1)";
-            loader.style.transform = "translateY(-100%)";
-            setTimeout(() => {
-              loader.style.display = "none";
-              nav.classList.add("visible");
-              startTyping();
-            }, 800);
-          }, 400);
-        });
+        loader.classList.add("fade-out");
+        setTimeout(() => {
+          loader.style.display = "none";
+          nav.classList.add("visible");
+          if (typeof gsap !== "undefined") {
+            animateHeroEntrance();
+          } else {
+            startTyping();
+          }
+        }, 500);
       }
-    }, 80);
+    }, 30);
   }
 
   /* -------------------------------------------------
@@ -177,7 +154,7 @@
   }
 
   async function initMusic() {
-    const audio = $("#bgMusic"), toggle = $("#musicToggle"), icon = $("#musicIcon"), text = $(".music-text", toggle), lContainer = $("#lyricsContainer"), lList = $("#lyricsList"), pBar = $("#musicProgressBar");
+    const audio = $("#bgMusic"), toggle = $("#musicToggle"), iconOff = $("#musicIconOff"), iconOn = $("#musicIconOn"), text = $(".music-text", toggle), lContainer = $("#lyricsContainer"), lList = $("#lyricsList"), pBar = $("#musicProgressBar");
     if (!audio || !toggle) return;
 
     let lyricsData = [{ time: 0, text: "♪ Loading Vibe..." }];
@@ -200,11 +177,15 @@
         text.textContent = "Syncing...";
         audio.play().then(() => {
           toggle.classList.add("playing"); lContainer.classList.add("visible");
-          icon.className = "fa-solid fa-volume-high"; text.textContent = "Vibe: On";
+          if (iconOff) iconOff.style.display = "none";
+          if (iconOn) iconOn.style.display = "inline-block";
+          text.textContent = "Vibe: On";
         }).catch(e => { text.textContent = "Vibe Error"; setTimeout(() => { text.textContent = "Vibe: Off"; }, 2000); });
       } else {
         audio.pause(); toggle.classList.remove("playing"); lContainer.classList.remove("visible");
-        icon.className = "fa-solid fa-volume-xmark"; text.textContent = "Vibe: Off";
+        if (iconOff) iconOff.style.display = "inline-block";
+        if (iconOn) iconOn.style.display = "none";
+        text.textContent = "Vibe: Off";
       }
     });
 
@@ -268,12 +249,10 @@
     initNav();
     initMusic();
 
-    gsapPromise.then(() => {
+    if (typeof gsap !== "undefined") {
       initScrollAnimations();
       initInteractions();
-    }).catch(err => {
-      console.warn("GSAP failed to load. Skipping GSAP animations.", err);
-    });
+    }
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
