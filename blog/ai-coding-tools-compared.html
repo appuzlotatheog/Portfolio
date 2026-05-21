@@ -32,8 +32,18 @@
   <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" /></noscript>
   <!-- GA4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-JFD0NGPQJL"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-JFD0NGPQJL');</script>
+    <script>
+    window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+    gtag('js',new Date());gtag('config','G-JFD0NGPQJL');
+    const loadGA = () => {
+      if(window.gaLoaded) return; window.gaLoaded = true;
+      const script = document.createElement('script');
+      script.src = "https://www.googletagmanager.com/gtag/js?id=G-JFD0NGPQJL";
+      document.head.appendChild(script);
+    };
+    setTimeout(loadGA, 3500);
+    ['scroll','click','mousemove'].forEach(e => window.addEventListener(e, loadGA, {once:true, passive:true}));
+  </script>
   
   <!-- JSON-LD -->
   <script type="application/ld+json">
