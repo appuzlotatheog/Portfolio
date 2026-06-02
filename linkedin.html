@@ -248,7 +248,7 @@
         <span class="time-label">Mins</span>
       </div>
       <div class="time-block decimals">
-        <span class="time-value" id="secs">00.000000</span>
+        <span class="time-value" id="secs">00.0</span>
         <span class="time-label">Seconds</span>
       </div>
     </div>
@@ -288,7 +288,7 @@
       daysEl.innerText = String(days).padStart(3, '0');
       hoursEl.innerText = String(hours).padStart(2, '0');
       minsEl.innerText = String(minutes).padStart(2, '0');
-      secsEl.innerText = seconds.toFixed(6).padStart(9, '0');
+      secsEl.innerText = seconds.toFixed(1).padStart(4, '0');
       
       requestAnimationFrame(updateTimer);
     }
