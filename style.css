@@ -130,21 +130,36 @@ img { display: block; max-width: 100%; height: auto; border: var(--border-w) sol
 .nav-menu-btn {
   display: none; width: 60px; height: 60px; background: var(--accent-3); border: 4px solid var(--black);
   box-shadow: 6px 6px 0 var(--black); flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer; z-index: 1100;
+  transition: all 0.4s var(--ease-bounce);
 }
-.nav-menu-btn span { display: block; width: 34px; height: 6px; background: var(--black); transition: all 0.3s var(--ease-bounce); }
+.nav-menu-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--black); }
+.nav-menu-btn span { display: block; width: 34px; height: 6px; background: var(--black); transition: all 0.4s var(--ease-bounce); }
+.nav-menu-btn.open { background: var(--accent-1); transform: rotate(180deg); box-shadow: -6px -6px 0 var(--black); }
 .nav-menu-btn.open span:nth-child(1) { transform: translateY(12px) rotate(45deg); }
-.nav-menu-btn.open span:nth-child(2) { opacity: 0; transform: translateX(-10px); }
+.nav-menu-btn.open span:nth-child(2) { opacity: 0; transform: translateX(-20px); }
 .nav-menu-btn.open span:nth-child(3) { transform: translateY(-12px) rotate(-45deg); }
 
 .mobile-menu {
-  position: fixed; inset: 0; background: var(--accent-1); z-index: 1050;
+  position: fixed; inset: 0; background: var(--accent-3); z-index: 1050;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-xl);
-  clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); transition: clip-path 0.6s var(--ease-snap);
+  clip-path: circle(0% at calc(100% - 50px) 50px); transition: clip-path 0.8s cubic-bezier(0.85, 0, 0.15, 1);
   will-change: clip-path, transform; transform: translateZ(0);
+  background-image: linear-gradient(var(--black) 3px, transparent 3px), linear-gradient(90deg, var(--black) 3px, transparent 3px);
+  background-size: 60px 60px;
+  animation: menuGridPan 15s linear infinite;
 }
-.mobile-menu.open { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-.mobile-link { font-family: var(--font-display); font-size: 3.5rem; font-weight: 900; color: var(--black); -webkit-text-stroke: 2px var(--white); text-transform: uppercase; transition: all 0.3s var(--ease-bounce); transform: translateZ(0); }
-.mobile-link:hover { transform: scale(1.1) skew(-5deg) translateZ(0); color: var(--white); -webkit-text-stroke: 2px var(--black); }
+@keyframes menuGridPan {
+  0% { background-position: 0 0; }
+  100% { background-position: 60px 60px; }
+}
+.mobile-menu.open { clip-path: circle(150% at calc(100% - 50px) 50px); }
+.mobile-link { 
+  font-family: var(--font-display); font-size: 3.5rem; font-weight: 900; color: var(--white); 
+  -webkit-text-stroke: 2px var(--black); text-transform: uppercase; transition: all 0.3s var(--ease-bounce); 
+  background: var(--black); padding: 15px 40px; border: 4px solid var(--black); box-shadow: 12px 12px 0 var(--accent-1);
+  transform: rotate(-3deg); width: 80%; text-align: center; max-width: 350px;
+}
+.mobile-link:hover { transform: scale(1.1) rotate(2deg) translateZ(0); color: var(--accent-1); background: var(--white); -webkit-text-stroke: 2px var(--black); box-shadow: 15px 15px 0 var(--black); }
 
 /* ===================================================
    HERO

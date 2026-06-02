@@ -115,8 +115,8 @@
           nav.classList.add("visible"); nav.classList.remove("nav-hidden");
           if (typeof gsap !== "undefined") {
             gsap.fromTo(".mobile-link", 
-              { y: 50, opacity: 0 }, 
-              { y: 0, opacity: 1, stagger: 0.1, duration: 0.5, ease: "back.out(1.7)", delay: 0.2, clearProps: "all" }
+              { x: -100, rotate: -15, opacity: 0, scale: 0.5 }, 
+              { x: 0, rotate: -3, opacity: 1, scale: 1, stagger: 0.12, duration: 0.8, ease: "elastic.out(1, 0.4)", delay: 0.3, clearProps: "all" }
             );
           }
         }
