@@ -5,12 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LinkedIn — Loading...</title>
   
-  <!-- SEO Essentials -->
   <meta name="description" content="Countdown until Appuzlota's LinkedIn profile unlocks.">
   <link rel="canonical" href="https://appuzlota.me/linkedin.html">
   <meta name="theme-color" content="#FF5C5C">
 
-  <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192x192.png">
   
@@ -21,125 +19,263 @@
 
   <style>
     body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg, #f4f4f0);
+      color: var(--text, #111);
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
       display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* Moving background grid */
+    .bg-grid {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-size: 50px 50px;
+      background-image: 
+        linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+      z-index: -1;
+      animation: panGrid 20s linear infinite;
+    }
+
+    @keyframes panGrid {
+      from { transform: translateY(0); }
+      to { transform: translateY(50px); }
+    }
+
+    /* Marquee tape */
+    .marquee {
+      background: var(--primary, #FF5C5C);
+      color: var(--bg, #fff);
+      padding: 1rem 0;
+      white-space: nowrap;
+      overflow: hidden;
+      border-bottom: 4px solid var(--text, #000);
+      border-top: 4px solid var(--text, #000);
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 4px 0 var(--text, #000);
+    }
+    .marquee-content {
+      display: inline-block;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      animation: scroll 15s linear infinite;
+    }
+    .marquee-content span { margin-right: 2rem; }
+
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Main container */
+    .hero-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Space Grotesk', sans-serif;
+      padding: 2rem;
       text-align: center;
-      overflow: hidden;
-      margin: 0;
-    }
-    .countdown-container {
-      background: var(--card-bg);
-      border: 4px solid var(--text);
-      padding: 4rem 2rem;
-      box-shadow: 12px 12px 0 var(--text);
       position: relative;
-      max-width: 900px;
-      width: 90%;
+      z-index: 1;
+      padding-bottom: 6rem;
     }
-    .countdown-container::before {
-      content: '';
-      position: absolute;
-      top: -15px;
-      left: -15px;
-      width: 30px;
-      height: 30px;
-      background: var(--accent);
-      border: 4px solid var(--text);
-    }
-    .title {
-      font-size: clamp(2rem, 5vw, 3rem);
-      font-weight: 700;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-      color: var(--primary);
-    }
-    .subtitle {
-      font-size: clamp(1rem, 2vw, 1.25rem);
-      margin-bottom: 3rem;
-      line-height: 1.6;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .timer {
-      font-family: 'Space Mono', monospace;
-      font-size: clamp(1.5rem, 4vw, 3.5rem);
-      font-weight: 700;
-      background: var(--text);
-      color: var(--bg);
-      padding: 1.5rem 2rem;
-      border: 4px solid var(--text);
-      display: inline-block;
-      box-shadow: -10px -10px 0 var(--primary);
-      margin-bottom: 1.5rem;
-    }
-    .timer-label {
-      display: block;
-      font-size: 1rem;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      font-weight: 600;
-      letter-spacing: 2px;
-    }
-    .back-link {
-      display: inline-block;
-      margin-top: 3.5rem;
+
+    .title-box {
+      background: var(--accent, #FBBF24);
       padding: 1rem 2rem;
-      background: var(--primary);
-      color: var(--bg);
-      text-decoration: none;
-      font-weight: 700;
-      border: 3px solid var(--text);
-      text-transform: uppercase;
-      transition: all 0.2s ease;
-      box-shadow: 6px 6px 0 var(--text);
+      border: 4px solid var(--text, #000);
+      box-shadow: 8px 8px 0 var(--text, #000);
+      margin-bottom: 2rem;
+      transform: rotate(-2deg);
     }
-    .back-link:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 8px 8px 0 var(--text);
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      font-size: 1.25rem;
+      font-weight: 600;
+      max-width: 600px;
+      margin-bottom: 3rem;
+      background: #fff;
+      padding: 1rem;
+      border: 3px solid #000;
+      box-shadow: 4px 4px 0 #000;
+    }
+
+    /* Countdown blocks */
+    .countdown-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .time-block {
+      background: var(--text, #000);
+      color: var(--bg, #fff);
+      padding: 1.5rem;
+      border: 4px solid var(--primary, #FF5C5C);
+      box-shadow: -8px 8px 0 var(--primary, #FF5C5C);
+      min-width: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.1s;
+    }
+
+    .time-block.decimals {
+      min-width: 250px;
+      background: var(--bg, #fff);
+      color: var(--text, #000);
+      border-color: var(--text, #000);
+      box-shadow: -8px 8px 0 var(--accent, #FBBF24);
+    }
+
+    .time-value {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .time-label {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 600;
+      color: var(--text-dim, #ccc);
     }
     
-    /* Glitch effect for the timer */
-    @keyframes glitch {
-      0% { transform: translate(0) }
-      20% { transform: translate(-2px, 2px) }
-      40% { transform: translate(-2px, -2px) }
-      60% { transform: translate(2px, 2px) }
-      80% { transform: translate(2px, -2px) }
-      100% { transform: translate(0) }
+    .time-block.decimals .time-label {
+      color: var(--text-dim, #666);
+    }
+
+    .back-btn {
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      background: #fff;
+      color: #000;
+      text-decoration: none;
+      border: 4px solid #000;
+      box-shadow: 6px 6px 0 #000;
+      transition: all 0.1s;
+      display: inline-block;
+    }
+
+    .back-btn:hover {
+      transform: translate(2px, 2px);
+      box-shadow: 4px 4px 0 #000;
+    }
+    .back-btn:active {
+      transform: translate(6px, 6px);
+      box-shadow: 0 0 0 #000;
+    }
+
+    .date-badge {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      background: #000;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      border: 2px solid var(--accent, #FBBF24);
+      transform: rotate(3deg);
+    }
+
+    @media (max-width: 768px) {
+      .countdown-wrapper { gap: 1rem; }
+      .time-block { min-width: 80px; padding: 1rem; }
+      .time-value { font-size: 2rem; }
+      .time-block.decimals { min-width: 180px; }
+      .date-badge { position: relative; top: 0; right: 0; margin-bottom: 2rem; }
     }
   </style>
 </head>
 <body>
-  <div class="countdown-container">
-    <h1 class="title">LinkedIn Access Denied</h1>
-    <p class="subtitle">I'm currently under 18, which means the professional networking gates are locked. The LinkedIn profile will automatically unlock in exactly:</p>
+  <div class="bg-grid"></div>
+
+  <div class="marquee">
+    <div class="marquee-content">
+      <span>ACCESS RESTRICTED</span> <span>UNDER 18</span> <span>PROFILE LOCKED</span> <span>COUNTING DOWN</span>
+      <span>ACCESS RESTRICTED</span> <span>UNDER 18</span> <span>PROFILE LOCKED</span> <span>COUNTING DOWN</span>
+    </div>
+  </div>
+
+  <div class="hero-container">
+    <div class="date-badge">TARGET: JAN 29 2028</div>
     
-    <div>
-      <div class="timer" id="countdown">000D : 00H : 00M : 00.000000S</div>
-      <span class="timer-label">Until January 29, 2028 @ 7:11 PM</span>
+    <div class="title-box">
+      <h1>LinkedIn Profile Locked</h1>
+    </div>
+    
+    <div class="subtitle">
+      Professional networking gates will automatically unlock when I turn 18. Until then, we wait.
     </div>
 
-    <a href="/" class="back-link">Return to Portfolio</a>
+    <div class="countdown-wrapper">
+      <div class="time-block">
+        <span class="time-value" id="days">000</span>
+        <span class="time-label">Days</span>
+      </div>
+      <div class="time-block">
+        <span class="time-value" id="hours">00</span>
+        <span class="time-label">Hours</span>
+      </div>
+      <div class="time-block">
+        <span class="time-value" id="mins">00</span>
+        <span class="time-label">Mins</span>
+      </div>
+      <div class="time-block decimals">
+        <span class="time-value" id="secs">00.000000</span>
+        <span class="time-label">Seconds</span>
+      </div>
+    </div>
+
+    <a href="/" class="back-btn">← Return to Portfolio</a>
+  </div>
+
+  <div class="marquee" style="background: var(--accent, #FBBF24); border-top: none; position: absolute; bottom: 0; width: 100%;">
+    <div class="marquee-content" style="animation-direction: reverse; color: #000;">
+      <span>BUILDING SYSTEMS</span> <span>VIBE CODING</span> <span>STAYING CURIOUS</span> <span>SYSADMIN</span>
+      <span>BUILDING SYSTEMS</span> <span>VIBE CODING</span> <span>STAYING CURIOUS</span> <span>SYSADMIN</span>
+    </div>
   </div>
 
   <script>
-    // Target date: Jan 29 2028 19:11:00 (Local Time)
     const targetDate = new Date('2028-01-29T19:11:00').getTime();
-    const countdownEl = document.getElementById('countdown');
+    const daysEl = document.getElementById('days');
+    const hoursEl = document.getElementById('hours');
+    const minsEl = document.getElementById('mins');
+    const secsEl = document.getElementById('secs');
     
     function updateTimer() {
       const now = new Date().getTime();
       const diff = targetDate - now;
 
       if (diff <= 0) {
-        countdownEl.innerText = "ACCESS GRANTED";
-        countdownEl.style.animation = "glitch 0.5s infinite";
+        document.querySelector('.title-box h1').innerText = "ACCESS GRANTED";
         return;
       }
 
@@ -149,13 +285,10 @@
       const minutes = Math.floor((totalSeconds % 3600) / 60);
       const seconds = totalSeconds % 60;
       
-      // Pad with zeros for fixed width formatting
-      const d = String(days).padStart(3, '0');
-      const h = String(hours).padStart(2, '0');
-      const m = String(minutes).padStart(2, '0');
-      const s = seconds.toFixed(6).padStart(9, '0');
-
-      countdownEl.innerText = `${d}D : ${h}H : ${m}M : ${s}S`;
+      daysEl.innerText = String(days).padStart(3, '0');
+      hoursEl.innerText = String(hours).padStart(2, '0');
+      minsEl.innerText = String(minutes).padStart(2, '0');
+      secsEl.innerText = seconds.toFixed(6).padStart(9, '0');
       
       requestAnimationFrame(updateTimer);
     }
