@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LinkedIn — Loading...</title>
+  
+  <!-- SEO Essentials -->
+  <meta name="description" content="Countdown until Appuzlota's LinkedIn profile unlocks.">
+  <link rel="canonical" href="https://appuzlota.me/linkedin.html">
+  <meta name="theme-color" content="#FF5C5C">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192x192.png">
+  
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      text-align: center;
+      overflow: hidden;
+      margin: 0;
+    }
+    .countdown-container {
+      background: var(--card-bg);
+      border: 4px solid var(--text);
+      padding: 4rem 2rem;
+      box-shadow: 12px 12px 0 var(--text);
+      position: relative;
+      max-width: 900px;
+      width: 90%;
+    }
+    .countdown-container::before {
+      content: '';
+      position: absolute;
+      top: -15px;
+      left: -15px;
+      width: 30px;
+      height: 30px;
+      background: var(--accent);
+      border: 4px solid var(--text);
+    }
+    .title {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+    .subtitle {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      margin-bottom: 3rem;
+      line-height: 1.6;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .timer {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(1.5rem, 4vw, 3.5rem);
+      font-weight: 700;
+      background: var(--text);
+      color: var(--bg);
+      padding: 1.5rem 2rem;
+      border: 4px solid var(--text);
+      display: inline-block;
+      box-shadow: -10px -10px 0 var(--primary);
+      margin-bottom: 1.5rem;
+    }
+    .timer-label {
+      display: block;
+      font-size: 1rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 2px;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 3.5rem;
+      padding: 1rem 2rem;
+      background: var(--primary);
+      color: var(--bg);
+      text-decoration: none;
+      font-weight: 700;
+      border: 3px solid var(--text);
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+      box-shadow: 6px 6px 0 var(--text);
+    }
+    .back-link:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 8px 8px 0 var(--text);
+    }
+    
+    /* Glitch effect for the timer */
+    @keyframes glitch {
+      0% { transform: translate(0) }
+      20% { transform: translate(-2px, 2px) }
+      40% { transform: translate(-2px, -2px) }
+      60% { transform: translate(2px, 2px) }
+      80% { transform: translate(2px, -2px) }
+      100% { transform: translate(0) }
+    }
+  </style>
+</head>
+<body>
+  <div class="countdown-container">
+    <h1 class="title">LinkedIn Access Denied</h1>
+    <p class="subtitle">I'm currently under 18, which means the professional networking gates are locked. The LinkedIn profile will automatically unlock in exactly:</p>
+    
+    <div>
+      <div class="timer" id="countdown">000D : 00H : 00M : 00.000000S</div>
+      <span class="timer-label">Until January 29, 2028 @ 7:11 PM</span>
+    </div>
+
+    <a href="/" class="back-link">Return to Portfolio</a>
+  </div>
+
+  <script>
+    // Target date: Jan 29 2028 19:11:00 (Local Time)
+    const targetDate = new Date('2028-01-29T19:11:00').getTime();
+    const countdownEl = document.getElementById('countdown');
+    
+    function updateTimer() {
+      const now = new Date().getTime();
+      const diff = targetDate - now;
+
+      if (diff <= 0) {
+        countdownEl.innerText = "ACCESS GRANTED";
+        countdownEl.style.animation = "glitch 0.5s infinite";
+        return;
+      }
+
+      const totalSeconds = diff / 1000;
+      const days = Math.floor(totalSeconds / (3600 * 24));
+      const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      
+      // Pad with zeros for fixed width formatting
+      const d = String(days).padStart(3, '0');
+      const h = String(hours).padStart(2, '0');
+      const m = String(minutes).padStart(2, '0');
+      const s = seconds.toFixed(6).padStart(9, '0');
+
+      countdownEl.innerText = `${d}D : ${h}H : ${m}M : ${s}S`;
+      
+      requestAnimationFrame(updateTimer);
+    }
+
+    requestAnimationFrame(updateTimer);
+  </script>
+</body>
+</html>
