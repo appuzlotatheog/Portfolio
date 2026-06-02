@@ -1,6 +1,6 @@
 # Appuzlota Portfolio
 
-This project is a personal developer portfolio for Appuzlota, an AI prompt engineer and full-stack developer. The site showcases projects, technical skills, a blog, and a `/uses` page. It is built as a static site using pure HTML, CSS, and JavaScript with a distinct neo-brutalist aesthetic. There is no build step or framework involved, ensuring maximum performance and straightforward deployment to GitHub Pages.
+This project is a personal developer portfolio for Appuzlota, a developer specializing in AI-assisted vibe coding, Python, JavaScript, and Linux systems. The site showcases projects, technical skills, a blog, and a `/uses` page. It is built as a static site using pure HTML, CSS, and JavaScript with a distinct neo-brutalist aesthetic. There is no build step or framework involved, ensuring maximum performance and straightforward deployment to GitHub Pages.
 
 ## Core Files
 
@@ -17,7 +17,7 @@ Contains the blog architecture and published articles.
 - [blog/index.html](blog/index.html): The main blog listing page showcasing all available posts.
 - [blog/ai-assisted-coding.html](blog/ai-assisted-coding.html): Blog post detailing how AI accelerates full-stack development.
 - [blog/ai-coding-tools-compared.html](blog/ai-coding-tools-compared.html): An opinionated comparison of modern AI coding assistants.
-- [blog/what-is-vibe-coding.html](blog/what-is-vibe-coding.html): A thought-leadership piece explaining the "vibe coding" developer movement.
+- [blog/what-is-vibe-coding.html](blog/what-is-vibe-coding.html): An article exploring the "vibe coding" concept in development.
 
 ## /projects
 
