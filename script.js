@@ -1,5 +1,5 @@
 /* ===================================================
-   APPUZLOTA PORTFOLIO — Script
+   SOURAV MS PORTFOLIO — Script
    Pure JS + Dynamic GSAP + ScrollTrigger
    =================================================== */
 

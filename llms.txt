@@ -1,6 +1,6 @@
-# Appuzlota Portfolio
+# Sourav MS Portfolio (Appuzlota)
 
-This project is a personal developer portfolio for Appuzlota, a developer specializing in AI-assisted vibe coding, Python, JavaScript, and Linux systems. The site showcases projects, technical skills, a blog, and a `/uses` page. It is built as a static site using pure HTML, CSS, and JavaScript with a distinct neo-brutalist aesthetic. There is no build step or framework involved, ensuring maximum performance and straightforward deployment to GitHub Pages.
+This project is the personal developer portfolio of Sourav MS (also known online as Appuzlota), a developer specializing in AI-assisted vibe coding, Python, JavaScript, and Linux systems. The site showcases projects, technical skills, a blog, and a `/uses` page. It is built as a static site using pure HTML, CSS, and JavaScript with a distinct neo-brutalist aesthetic. There is no build step or framework involved, ensuring maximum performance and straightforward deployment to GitHub Pages.
 
 ## Core Files
 

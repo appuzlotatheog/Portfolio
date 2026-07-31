@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://appuzlota.me/sitemap.xml
+Sitemap: https://iamsourav.me/sitemap.xml
